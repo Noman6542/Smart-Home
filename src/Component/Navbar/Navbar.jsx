@@ -2,8 +2,9 @@ import React, { use, useEffect, useState } from "react";
 import { FaChartBar, FaPlus } from "react-icons/fa";
 import { HiOutlineQueueList } from "react-icons/hi2";
 import { IoHomeOutline } from "react-icons/io5";
-import { MdOutlineTrendingUp } from "react-icons/md";
+import { MdDashboardCustomize, MdOutlineTrendingUp } from "react-icons/md";
 import { Link, NavLink, useNavigate } from "react-router";
+import { IoIosLogOut } from "react-icons/io";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -130,10 +131,10 @@ const Navbar = () => {
               Login
             </Link>
             <Link
-              to="/signup"
+              to="/register"
               className="btn btn-secondary hidden md:flex items-center justify-center hover:bg-white hover:text-black"
             >
-              Signup
+              Register
             </Link>
           </div>
         ) : (
@@ -154,15 +155,14 @@ const Navbar = () => {
                 <div className="my-2">
                   <hr />
                 </div>
-
-                <Link
-                  to="/my-profile"
-                  onClick={() => setDropdownOpen(false)}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg flex items-center justify-center space-x-2"
+                <button
+                  
+                  className="w-full flex justify-center items-center gap-2 bg-[#00b894] hover:bg-[#636e72] text-white py-2 rounded-lg mt-2"
                 >
-                  <CgProfile className="w-6 h-6" />
-                  <span>My Profile</span>
-                </Link>
+                  <MdDashboardCustomize />
+                  Dashboard
+                </button>
+                
 
                 <div className="flex items-center justify-between mt-3 mb-2">
                   <span className="text-sm font-medium">Dark Mode</span>
@@ -173,13 +173,25 @@ const Navbar = () => {
                     className="toggle toggle-primary"
                   />
                 </div>
+                <Link
+                  to="/my-profile"
+                  onClick={() => setDropdownOpen(false)}
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg flex items-center justify-center space-x-2"
+                >
+                  <CgProfile className="w-6 h-6" />
+                  <span>My Profile</span>
+                </Link>
+
+                <div className="w-full mt-2"><hr></hr></div>
 
                 <button
                   onClick={handleLogout}
-                  className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg mt-2"
+                  className="w-full flex justify-center items-center bg-red-500 hover:bg-red-600 text-white py-2 gap 2 rounded-lg mt-2"
                 >
+                  <IoIosLogOut />
                   Logout
                 </button>
+                
               </div>
             )}
           </div>
