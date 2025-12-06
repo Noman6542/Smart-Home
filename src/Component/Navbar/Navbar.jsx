@@ -1,8 +1,8 @@
-import React, { use } from "react";
 import { Link, NavLink } from "react-router";
-import { AuthContext } from "../Provider/AuthProvider";
-import { toast } from "react-toastify";
 import { FaUserAlt } from "react-icons/fa";
+import { AuthContext } from "../../Provider/AuthProvider";
+import { toast } from "react-toastify";
+import { use } from "react";
 const Navbar = () => {
   const { user, logout } = use(AuthContext);
   const handleLogout = () => {
@@ -12,9 +12,10 @@ const Navbar = () => {
       })
       .catch((error) => toast.error(error.message));
   };
+ 
   return (
     <div className="sticky top-0 z-50">
-      <div className="navbar  bg-white shadow-sm border-b border-[#5e5feb] px-5 max-w-5xl mx-auto lg:px-8 rounded-3xl">
+      <div className="navbar  bg-white shadow-sm border-b border-[#5e5feb] px-5 max-w-6xl mx-auto lg:px-8 rounded-3xl">
         <div className="navbar-start">
           <div className="dropdown lg:hidden">
             <label tabIndex={0} className="btn btn-ghost">
