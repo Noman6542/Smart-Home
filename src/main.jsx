@@ -8,6 +8,7 @@ import Home from './Component/Home/Home.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Login from './Page/Login/Login.jsx';
 import AuthProvider from './Provider/AuthProvider.jsx';
+import ErrorPage from './ErrorPage/ErrorPage.jsx';
 
 
 
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component:mainLayout,
-    // errorElement:<Page404></Page404>,
+    errorElement:<ErrorPage/>,
     children:[
       {
         index:true,

@@ -1,203 +1,189 @@
-import { Link, NavLink } from "react-router";
-import { FaUserAlt } from "react-icons/fa";
+import React, { use, useEffect, useState } from "react";
+import { FaChartBar, FaPlus } from "react-icons/fa";
+import { HiOutlineQueueList } from "react-icons/hi2";
+import { IoHomeOutline } from "react-icons/io5";
+import { MdOutlineTrendingUp } from "react-icons/md";
+import { Link, NavLink, useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import { CgProfile } from "react-icons/cg";
 import { AuthContext } from "../../Provider/AuthProvider";
-import { toast } from "react-toastify";
-import { use } from "react";
+import { auth } from "../../Firebase/Firebase.init";
+
 const Navbar = () => {
-  const { user, logout } = use(AuthContext);
-  const handleLogout = () => {
-    logout()
-      .then(() => {
-        toast.success("You logout successfully");
-      })
-      .catch((error) => toast.error(error.message));
+  const navigate = useNavigate();
+  const { user } = use(AuthContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  // Theme toggle
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark" : "light");
   };
- 
+
+  const handleLogout = () => {
+    auth.signOut();
+    Swal.fire("Logged out", "See you soon!", "success");
+    setDropdownOpen(false);
+  };
+
+  // NavLink Active Style
+  const linkStyle = ({ isActive }) =>
+    isActive
+      ? "flex items-center space-x-2 font-bold text-white bg-white/20 px-4 py-2 rounded-lg"
+      : "flex items-center space-x-2 font-bold text-white px-4 py-2 hover:bg-white/10 rounded-lg";
+
   return (
-    <div className="sticky top-0 z-50">
-      <div className="navbar  bg-white shadow-sm border-b border-[#5e5feb] px-5 max-w-6xl mx-auto lg:px-8 rounded-3xl">
-        <div className="navbar-start">
-          <div className="dropdown lg:hidden">
-            <label tabIndex={0} className="btn btn-ghost">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </label>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+    <div className="navbar bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 shadow-xl sticky top-0 z-50 backdrop-blur-lg border-b border-white/10 max-w-6xl mx-auto">
+      {/* LEFT SIDE */}
+      <div className="navbar-start">
+        {/* Mobile Menu */}
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <NavLink className="hover:underline hover:text-[#4338ca]" to="/">
-                Home
-              </NavLink>
-              <NavLink
-                className="hover:underline hover:text-[#4338ca]"
-                to="/all-items"
-              >
-                All-Items
-              </NavLink>
-              <NavLink
-                className="hover:underline hover:text-[#4338ca]"
-                to="/about-us"
-              >
-                About Us
-              </NavLink>
-              <NavLink
-                className="hover:underline hover:text-[#4338ca]"
-                to="/contact-us"
-              >
-                Contact Us
-              </NavLink>
-              {user && (
-                <NavLink
-                  className="hover:underline hover:text-[#4338ca]"
-                  to="/ServicesDetails"
-                >
-                  My Profile
-                </NavLink>
-              )}
-              <div>
-                {user ? (
-                  <button
-                    onClick={handleLogout}
-                    to="/register"
-                    className="btn btn-outline btn-primary"
-                  >
-                    Log-Out
-                  </button>
-                ) : (
-                  <Link
-                    to="/login"
-                    className="btn btn-primary hover:bg-transparent hover:font-semibold hover:text-black"
-                  >
-                    Login
-                  </Link>
-                )}
-              </div>
-            </ul>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </div>
 
-          <NavLink
-            to="/"
-            className="flex justify-around gap-1 items-center ml-2"
+          {/* Mobile Items */}
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-indigo-800 rounded-xl mt-3 w-56 p-4 shadow space-y-4"
           >
-            <img
-              src="https://images.stockcake.com/public/e/8/3/e8330a9a-7961-4a5f-bb84-a03a35abd4b7_large/cat-paw-close-up-stockcake.jpg"
-              alt="WarmPaws Logo"
-              className="w-12 h-12 rounded-full"
-            />
-            <span className="btn btn-ghost text-xl text-[#4338ca]">
-              WarmPaws
-            </span>
+            <NavLink to="/" className={linkStyle}>
+              <IoHomeOutline className="w-5 h-5" />
+              <span>Home</span>
+            </NavLink>
+
+            <NavLink to="/add-transaction" className={linkStyle}>
+              <FaPlus className="w-5 h-5" />
+              <span>Add Transaction</span>
+            </NavLink>
+
+            <NavLink to="/my-transaction" className={linkStyle}>
+              <HiOutlineQueueList className="w-5 h-5" />
+              <span>My Transactions</span>
+            </NavLink>
+
+            <NavLink to="/report" className={linkStyle}>
+              <FaChartBar className="w-5 h-5" />
+              <span>Reports</span>
+            </NavLink>
+          </ul>
+        </div>
+
+        {/* LOGO */}
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center space-x-2 text-white font-bold tracking-tight"
+        >
+          <MdOutlineTrendingUp className="w-8 h-8" />
+          <span className="text-xl">FinEase</span>
+        </button>
+      </div>
+
+      {/* CENTER NAV (Desktop) */}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal space-x-8">
+          <NavLink to="/" className={linkStyle}>
+            <IoHomeOutline className="w-6 h-6" />
+            <span>Home</span>
           </NavLink>
-        </div>
 
-        <div className="lg:flex items-center justify-between gap-6 md:block w-full ">
-          <div className=" lg:flex items-center gap-4 hidden md:block">
-            <NavLink
-              className={({ isActive }) =>
-                `px-3 py-2 rounded-md transition whitespace-nowrap ${
-                  isActive
-                    ? "bg-[#5e5feb] text-white"
-                    : "hover:bg-gray-100 hover:text-[#4338ca]"
-                }`
-              }
-              to="/"
+          <NavLink to="/add-transaction" className={linkStyle}>
+            <FaPlus className="w-6 h-6" />
+            <span>Add Transaction</span>
+          </NavLink>
+
+          <NavLink to="/my-transaction" className={linkStyle}>
+            <HiOutlineQueueList className="w-6 h-6" />
+            <span>My Transactions</span>
+          </NavLink>
+
+          <NavLink to="/report" className={linkStyle}>
+            <FaChartBar className="w-6 h-6" />
+            <span>Reports</span>
+          </NavLink>
+        </ul>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="navbar-end relative">
+
+        {/* If NOT Logged In */}
+        {!user ? (
+          <div className="flex items-center space-x-3">
+            <Link
+              to="/login"
+              className="btn btn-primary hidden md:flex items-center justify-center hover:bg-white hover:text-black"
             >
-              Home
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `px-3 py-2 rounded-md transition whitespace-nowrap ${
-                  isActive
-                    ? "bg-[#5e5feb] text-white"
-                    : "hover:bg-gray-100 hover:text-[#4338ca]"
-                }`
-              }
-              to="/all-items"
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="btn btn-secondary hidden md:flex items-center justify-center hover:bg-white hover:text-black"
             >
-              All-Items
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `px-3 py-2 rounded-md transition whitespace-nowrap ${
-                  isActive
-                    ? "bg-[#5e5feb] text-white"
-                    : "hover:bg-gray-100 hover:text-[#4338ca]"
-                }`
-              }
-              to="/about-us"
-            >
-              About Us
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `px-3 py-2 rounded-md transition whitespace-nowrap ${
-                  isActive
-                    ? "bg-[#5e5feb] text-white"
-                    : "hover:bg-gray-100 hover:text-[#4338ca]"
-                }`
-              }
-              to="/contact-us"
-            >
-              Contact Us
-            </NavLink>
-            {user && (
-              <NavLink
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-md transition whitespace-nowrap ${
-                    isActive
-                      ? "bg-[#5e5feb] text-white"
-                      : "hover:bg-gray-100 hover:text-[#4338ca]"
-                  }`
-                }
-                to="/profile"
-              >
-                My Profile
-              </NavLink>
+              Signup
+            </Link>
+          </div>
+        ) : (
+          // If Logged In
+          <div className="relative">
+            <img
+              src={user.photoURL || "/default.png"}
+              alt="user"
+              className="w-10 h-10 rounded-full cursor-pointer border-2 border-white"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            />
+
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-3 w-56 bg-white shadow-xl rounded-xl p-4 z-50">
+                <p className="font-semibold">{user.displayName}</p>
+                <p className="text-sm text-gray-600">{user.email}</p>
+
+                <div className="my-2">
+                  <hr />
+                </div>
+
+                <Link
+                  to="/my-profile"
+                  onClick={() => setDropdownOpen(false)}
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg flex items-center justify-center space-x-2"
+                >
+                  <CgProfile className="w-6 h-6" />
+                  <span>My Profile</span>
+                </Link>
+
+                <div className="flex items-center justify-between mt-3 mb-2">
+                  <span className="text-sm font-medium">Dark Mode</span>
+                  <input
+                    onChange={(e) => handleTheme(e.target.checked)}
+                    type="checkbox"
+                    defaultChecked={theme === "dark"}
+                    className="toggle toggle-primary"
+                  />
+                </div>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg mt-2"
+                >
+                  Logout
+                </button>
+              </div>
             )}
           </div>
-
-          <div className="flex items-center gap-3">
-            {user && user.photoURL ? (
-              <img
-                className="w-12 h-12 rounded-full border"
-                src={user.photoURL}
-                alt="User"
-              />
-            ) : (
-              <FaUserAlt className="w-10 h-10 text-gray-500" />
-            )}
-
-            {user ? (
-              <button
-                onClick={handleLogout}
-                to="/register"
-                className="btn btn-outline btn-primary hidden md:flex items-center justify-center"
-              >
-                Log-Out
-              </button>
-            ) : (
-              <Link
-                to="/login"
-                className="btn btn-primary hidden md:flex items-center justify-center hover:bg-transparent hover:font-semibold hover:text-black "
-              >
-                Login
-              </Link>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
