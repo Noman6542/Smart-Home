@@ -11,6 +11,8 @@ import AuthProvider from './Provider/AuthProvider.jsx';
 import ErrorPage from './ErrorPage/ErrorPage.jsx';
 import Register from './Page/Registar/Registar.jsx';
 import Service from './Page/Service/Service.jsx';
+import PrivateRoute from './PrivateRoute/PrivateRoute.jsx';
+import Decorator from './Page/Decorator/Decorator.jsx';
 
 
 
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
       {
         path:'/service',
         Component:Service
+      },
+      {
+        path:'/decorator',
+        element:<PrivateRoute><Decorator></Decorator></PrivateRoute>
       }
 
 

@@ -6,9 +6,11 @@ import { FaEye } from "react-icons/fa6";
 import { IoEyeOff } from "react-icons/io5";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Register = () => {
-  const { createUser, setUser, googleWithSignin } = use(AuthContext);
+  const { createUser, setUser, googleWithSignin, updateUserProfile } =
+    use(AuthContext);
   const {
     register,
     handleSubmit,
@@ -23,17 +25,41 @@ const Register = () => {
   const handleRegister = (data) => {
     const profileImage = data.photo[0];
 
-      createUser(data.email, data.password)
-        .then((result) => {
-          const fromData = new FormData()
-          fromData.append('photo',profileImage)
-          setUser(result.user);
-          toast.success("User created:", result.user);
-          navigate("/");
-        })
-        .catch((error) => {
-          toast.error("Firebase Error:", error.message);
+    createUser(data.email, data.password)
+      .then((result) => {
+        // store the image and get URL
+        const fromData = new FormData();
+        fromData.append("image", profileImage);
+        const Image_Api_URL = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_users_photo_secret_key
+        }`;
+        axios.post(Image_Api_URL, fromData).then((res) => {
+          console.log("after image update", res.data.data.url);
+
+          // update profile
+
+          const userProfile = {
+            displayName: data.name,
+            photoURL: res.data.data.url,
+          };
+
+          updateUserProfile(userProfile)
+            .then(() => {
+             
+              navigate(location.state || "/");
+            })
+            .catch((error) => {
+              toast.error( error.message);
+            });
         });
+
+        setUser(result.user);
+        toast.success("User created:", result.user);
+        navigate("/");
+      })
+      .catch((error) => {
+        toast.error("Firebase Error:", error.message);
+      });
   };
   const handleWithGoogle = () => {
     googleWithSignin()
@@ -61,7 +87,7 @@ const Register = () => {
               className="input input-bordered w-full"
               placeholder="Enter your name"
             />
-            {errors.name?.type==='required' && (
+            {errors.name?.type === "required" && (
               <p className="text-red-500 text-sm">Name is required</p>
             )}
 
@@ -73,19 +99,19 @@ const Register = () => {
               className="input input-bordered w-full"
               placeholder="Enter your email"
             />
-            {errors.email?.type==='required' && (
+            {errors.email?.type === "required" && (
               <p className="text-red-500 text-sm">Email is required</p>
             )}
 
             {/* Photo  */}
             <label className="label font-medium">Photo</label>
             <input
-              {...register("photoURL", { required: true })}
+              {...register("photo", { required: true })}
               type="file"
               className="file-input input-bordered w-full"
               placeholder="Your Photo"
             />
-            {errors.photoURL?.type==='required' && (
+            {errors.photoURL?.type === "required" && (
               <p className="text-red-500 text-sm">Photo is required</p>
             )}
 
@@ -96,7 +122,7 @@ const Register = () => {
                 {...register("password", {
                   required: true,
                   minLength: 6,
-                  pattern:/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
                 })}
                 type={show ? "text" : "password"}
                 value={password}

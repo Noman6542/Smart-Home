@@ -1,13 +1,13 @@
 import React, { use, useEffect, useState } from "react";
-import { FaChartBar, FaPlus } from "react-icons/fa";
-import { HiOutlineQueueList } from "react-icons/hi2";
+
 import { IoHomeOutline } from "react-icons/io5";
+import { LuMapPinHouse } from "react-icons/lu";
 import { BsInfoCircleFill } from "react-icons/bs";
 import {
   MdConnectWithoutContact,
   MdDashboardCustomize,
   MdDesignServices,
-  MdOutlineTrendingUp,
+  MdOutlineHomeRepairService,
 } from "react-icons/md";
 import { Link, NavLink, useNavigate } from "react-router";
 import { IoIosLogOut } from "react-icons/io";
@@ -84,6 +84,11 @@ const Navbar = () => {
               <span>Service</span>
             </NavLink>
 
+            <NavLink to="/coverage" className={linkStyle}>
+              <LuMapPinHouse className="w-5 h-5" />
+              <span>Coverage</span>
+            </NavLink>
+
             <NavLink to="/about" className={linkStyle}>
               <BsInfoCircleFill className="w-5 h-5" />
 
@@ -94,6 +99,11 @@ const Navbar = () => {
               <MdConnectWithoutContact className="w-5 h-5" />
               <span>Contact</span>
             </NavLink>
+            
+            <NavLink to="/decorator" className={linkStyle}>
+              <MdConnectWithoutContact className="w-5 h-5" />
+              <span className="text-black font-semibold">Decorator</span>
+            </NavLink>
           </ul>
         </div>
 
@@ -103,13 +113,13 @@ const Navbar = () => {
           className="flex items-center space-x-2 text-white font-bold tracking-tight"
         >
           <img src={logo} alt="" className="w-8 h-8" />
-          <span className="text-xl">FinEase</span>
+          <span className="text-xl">Smart Home</span>
         </button>
       </div>
 
       {/* CENTER NAV (Desktop) */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal space-x-8">
+        <ul className="menu menu-horizontal space-x-4">
           <NavLink to="/" className={linkStyle}>
             <IoHomeOutline className="w-6 h-6" />
             <span>Home</span>
@@ -119,6 +129,10 @@ const Navbar = () => {
             <MdDesignServices className="w-5 h-5" />
 
             <span>Service</span>
+          </NavLink>
+          <NavLink to="/coverage" className={linkStyle}>
+            <LuMapPinHouse className="w-5 h-5" />
+            <span>Coverage</span>
           </NavLink>
 
           <NavLink to="/about" className={linkStyle}>
@@ -130,6 +144,14 @@ const Navbar = () => {
           <NavLink to="/contact" className={linkStyle}>
             <MdConnectWithoutContact className="w-5 h-5" />
             <span>Contact</span>
+          </NavLink>
+          
+          <NavLink
+            to="/decorator"
+            className="bg-emerald-500 hover:bg-emerald-700 flex justify-center items-center p-3 gap-2 rounded-full text-white"
+          >
+            <MdOutlineHomeRepairService className="w-5 h-5  " />
+            <span className=" font-semibold">Decorator</span>
           </NavLink>
         </ul>
       </div>
