@@ -13,6 +13,7 @@ import Register from './Page/Registar/Registar.jsx';
 import Service from './Page/Service/Service.jsx';
 import PrivateRoute from './PrivateRoute/PrivateRoute.jsx';
 import Decorator from './Page/Decorator/Decorator.jsx';
+import Coverage from './Page/Coverage/Coverage.jsx';
 
 
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path:'/decorator',
         element:<PrivateRoute><Decorator></Decorator></PrivateRoute>
+      },
+      {
+        path:'/coverage',
+        Component:Coverage
       }
 
 
