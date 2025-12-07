@@ -10,6 +10,7 @@ import Login from './Page/Login/Login.jsx';
 import AuthProvider from './Provider/AuthProvider.jsx';
 import ErrorPage from './ErrorPage/ErrorPage.jsx';
 import Register from './Page/Registar/Registar.jsx';
+import Service from './Page/Service/Service.jsx';
 
 
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path:'/register',
         Component:Register
+      },
+      {
+        path:'/service',
+        Component:Service
       }
 
 

@@ -4,42 +4,36 @@ import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye } from "react-icons/fa6";
 import { IoEyeOff } from "react-icons/io5";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
   const { createUser, setUser, googleWithSignin } = use(AuthContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
   const location = useLocation();
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value.trim();
-    const email = e.target.email.value;
-    const photo = e.target.photo.value;
-    const password = e.target.password.value;
-    const validatePassword = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-    if (!validatePassword.test(password)) {
-      Swal.fire(
-        "Error",
-        "Password must have 1 uppercase, 1 lowercase & 6+ chars",
-        "error"
-      );
-      return;
-    }
-    // console.log(name, email, photo, password);
-    createUser(email, password)
-      .then((result) => {
-        setUser(result.user);
-        toast.success("User created:", result.user);
-        navigate("/");
-      })
-      .catch((error) => {
-        toast.error("Firebase Error:", error.message);
-      });
+  const handleRegister = (data) => {
+    const profileImage = data.photo[0];
+
+      createUser(data.email, data.password)
+        .then((result) => {
+          const fromData = new FormData()
+          fromData.append('photo',profileImage)
+          setUser(result.user);
+          toast.success("User created:", result.user);
+          navigate("/");
+        })
+        .catch((error) => {
+          toast.error("Firebase Error:", error.message);
+        });
   };
   const handleWithGoogle = () => {
     googleWithSignin()
@@ -57,77 +51,100 @@ const Register = () => {
     <div className="hero bg-base-200 min-h-screen my-10">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl text-center">
         <h2 className="font-semibold text-3xl p-4">Register your account</h2>
-        <form onSubmit={handleRegister} className="card-body">
-          <fieldset className="fieldset">
-            {/* name  */}
-            <label className="label">Name</label>
+        <form onSubmit={handleSubmit(handleRegister)} className="card-body">
+          <fieldset className="fieldset space-y-3">
+            {/* Name */}
+            <label className="label font-medium">Name</label>
             <input
-              name="name"
+              {...register("name", { required: true })}
               type="text"
-              className="input"
+              className="input input-bordered w-full"
               placeholder="Enter your name"
-              required
             />
+            {errors.name?.type==='required' && (
+              <p className="text-red-500 text-sm">Name is required</p>
+            )}
 
-            {/* email  */}
-
-            <label className="label">Email</label>
+            {/* Email */}
+            <label className="label font-medium">Email</label>
             <input
-              name="email"
+              {...register("email", { required: true })}
               type="email"
-              className="input"
-              placeholder="Email"
-              required
+              className="input input-bordered w-full"
+              placeholder="Enter your email"
             />
+            {errors.email?.type==='required' && (
+              <p className="text-red-500 text-sm">Email is required</p>
+            )}
 
             {/* Photo  */}
-
-            <label className="label">Photo URL</label>
+            <label className="label font-medium">Photo</label>
             <input
-              name="photo"
-              type="text"
-              className="input"
-              placeholder="Photo URL"
-              required
+              {...register("photoURL", { required: true })}
+              type="file"
+              className="file-input input-bordered w-full"
+              placeholder="Your Photo"
             />
+            {errors.photoURL?.type==='required' && (
+              <p className="text-red-500 text-sm">Photo is required</p>
+            )}
 
-            {/* password  */}
-
-            <label className="label">Password</label>
-            <div className=" relative">
+            {/* Password */}
+            <label className="label font-medium">Password</label>
+            <div className="relative">
               <input
-                name="password"
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  pattern:/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                })}
                 type={show ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input"
-                placeholder="Password"
-                required
+                className="input input-bordered w-full pr-10"
+                placeholder="Enter password"
               />
               <span
                 onClick={() => setShow(!show)}
-                className=" absolute right-5 top-1/3 cursor-pointer z-50"
+                className="absolute right-3 top-3 cursor-pointer text-gray-700"
               >
-                {show ? <FaEye></FaEye> : <IoEyeOff></IoEyeOff>}
+                {show ? <FaEye /> : <IoEyeOff />}
               </span>
             </div>
+            {errors.password?.type === "required" && (
+              <p className="text-red-500 text-sm">Password is required</p>
+            )}
+            {errors.password?.type === "minLength" && (
+              <p className="text-red-500 text-sm">
+                Password must be 6+ characters
+              </p>
+            )}
+            {errors.password?.type === "pattern" && (
+              <p className="text-red-500 text-sm">
+                Password must have 1 uppercase, 1 lowercase & 6+ chars
+              </p>
+            )}
 
-            <div className="p-5 ">
-              <p>
+            {/* Login Link */}
+            <div className="pt-4">
+              <p className="text-sm">
                 Already have an account?
                 <Link
                   to="/login"
-                  className=" font-semibold hover:underline hover:text-[#4338ca] ml-2"
+                  className="font-semibold hover:underline hover:text-indigo-600 ml-1"
                 >
                   Login
                 </Link>
               </p>
             </div>
-            {error && <p className="text-red-400">{error}</p>}
-            <button type="submit" className="btn btn-neutral mt-4">
+
+            {error && <p className="text-red-600">{error}</p>}
+
+            <button type="submit" className="btn btn-neutral w-full mt-3">
               Register
             </button>
           </fieldset>
+
           <div className="flex justify-center items-center">
             <p className="font-bold text-2xl">or</p>
           </div>
@@ -142,5 +159,4 @@ const Register = () => {
     </div>
   );
 };
-
 export default Register;

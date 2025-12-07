@@ -2,13 +2,20 @@ import React, { use, useEffect, useState } from "react";
 import { FaChartBar, FaPlus } from "react-icons/fa";
 import { HiOutlineQueueList } from "react-icons/hi2";
 import { IoHomeOutline } from "react-icons/io5";
-import { MdDashboardCustomize, MdOutlineTrendingUp } from "react-icons/md";
+import { BsInfoCircleFill } from "react-icons/bs";
+import {
+  MdConnectWithoutContact,
+  MdDashboardCustomize,
+  MdDesignServices,
+  MdOutlineTrendingUp,
+} from "react-icons/md";
 import { Link, NavLink, useNavigate } from "react-router";
 import { IoIosLogOut } from "react-icons/io";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
-import { AuthContext } from "../../Provider/AuthProvider";
-import { auth } from "../../Firebase/Firebase.init";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import { auth } from "../../../Firebase/Firebase.init";
+import logo from "../../../assets/Screenshot 2025-12-06 192121.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -52,7 +59,12 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </div>
 
@@ -66,19 +78,21 @@ const Navbar = () => {
               <span>Home</span>
             </NavLink>
 
-            <NavLink to="/add-transaction" className={linkStyle}>
-              <FaPlus className="w-5 h-5" />
-              <span>Add Transaction</span>
+            <NavLink to="/service" className={linkStyle}>
+              <MdDesignServices className="w-5 h-5" />
+
+              <span>Service</span>
             </NavLink>
 
-            <NavLink to="/my-transaction" className={linkStyle}>
-              <HiOutlineQueueList className="w-5 h-5" />
-              <span>My Transactions</span>
+            <NavLink to="/about" className={linkStyle}>
+              <BsInfoCircleFill className="w-5 h-5" />
+
+              <span>About</span>
             </NavLink>
 
-            <NavLink to="/report" className={linkStyle}>
-              <FaChartBar className="w-5 h-5" />
-              <span>Reports</span>
+            <NavLink to="/contact" className={linkStyle}>
+              <MdConnectWithoutContact className="w-5 h-5" />
+              <span>Contact</span>
             </NavLink>
           </ul>
         </div>
@@ -88,7 +102,7 @@ const Navbar = () => {
           onClick={() => navigate("/")}
           className="flex items-center space-x-2 text-white font-bold tracking-tight"
         >
-          <MdOutlineTrendingUp className="w-8 h-8" />
+          <img src={logo} alt="" className="w-8 h-8" />
           <span className="text-xl">FinEase</span>
         </button>
       </div>
@@ -101,26 +115,27 @@ const Navbar = () => {
             <span>Home</span>
           </NavLink>
 
-          <NavLink to="/add-transaction" className={linkStyle}>
-            <FaPlus className="w-6 h-6" />
-            <span>Add Transaction</span>
+          <NavLink to="/service" className={linkStyle}>
+            <MdDesignServices className="w-5 h-5" />
+
+            <span>Service</span>
           </NavLink>
 
-          <NavLink to="/my-transaction" className={linkStyle}>
-            <HiOutlineQueueList className="w-6 h-6" />
-            <span>My Transactions</span>
+          <NavLink to="/about" className={linkStyle}>
+            <BsInfoCircleFill className="w-5 h-5" />
+
+            <span>About</span>
           </NavLink>
 
-          <NavLink to="/report" className={linkStyle}>
-            <FaChartBar className="w-6 h-6" />
-            <span>Reports</span>
+          <NavLink to="/contact" className={linkStyle}>
+            <MdConnectWithoutContact className="w-5 h-5" />
+            <span>Contact</span>
           </NavLink>
         </ul>
       </div>
 
       {/* RIGHT SIDE */}
       <div className="navbar-end relative">
-
         {/* If NOT Logged In */}
         {!user ? (
           <div className="flex items-center space-x-3">
@@ -155,14 +170,10 @@ const Navbar = () => {
                 <div className="my-2">
                   <hr />
                 </div>
-                <button
-                  
-                  className="w-full flex justify-center items-center gap-2 bg-[#00b894] hover:bg-[#636e72] text-white py-2 rounded-lg mt-2"
-                >
+                <button className="w-full flex justify-center items-center gap-2 bg-[#00b894] hover:bg-[#636e72] text-white py-2 rounded-lg mt-2">
                   <MdDashboardCustomize />
                   Dashboard
                 </button>
-                
 
                 <div className="flex items-center justify-between mt-3 mb-2">
                   <span className="text-sm font-medium">Dark Mode</span>
@@ -182,7 +193,9 @@ const Navbar = () => {
                   <span>My Profile</span>
                 </Link>
 
-                <div className="w-full mt-2"><hr></hr></div>
+                <div className="w-full mt-2">
+                  <hr></hr>
+                </div>
 
                 <button
                   onClick={handleLogout}
@@ -191,7 +204,6 @@ const Navbar = () => {
                   <IoIosLogOut />
                   Logout
                 </button>
-                
               </div>
             )}
           </div>

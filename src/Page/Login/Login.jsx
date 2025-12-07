@@ -5,8 +5,14 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOffSharp } from "react-icons/io5";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
 
@@ -14,12 +20,8 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
-    login(email, password)
+  const handleLogin = (data) => {
+    login(data.email, data.password)
       .then((result) => {
         const user = result.user;
         toast.success(`Login Successfully, ${user.displayName}`);
@@ -45,20 +47,27 @@ const Login = () => {
           Login your account
         </h2>
 
-        <form onSubmit={handleLogin} className="card-body">
+        <form onSubmit={handleSubmit(handleLogin)} className="card-body">
           <fieldset className="fieldset">
             <label className="label">Email</label>
             <input
-              name="email"
+              {...register("email", { required: true })}
               type="email"
               className="input"
               placeholder="Email"
             />
+            {errors.email?.type === "required" && (
+              <p className="text-red-500 text-sm">Email is required</p>
+            )}
 
             <label className="label">Password</label>
             <div className="relative">
               <input
-                name="password"
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                })}
                 type={show ? "text" : "password"}
                 className="input"
                 placeholder="Password"
@@ -69,6 +78,19 @@ const Login = () => {
               >
                 {show ? <FaEye></FaEye> : <IoEyeOffSharp />}
               </span>
+              {errors.password?.type === "required" && (
+                <p className="text-red-500 text-sm">Password is required</p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-red-500 text-sm">
+                  Password must be 6+ characters
+                </p>
+              )}
+              {errors.password?.type === "pattern" && (
+                <p className="text-red-500 text-sm">
+                  Password must have 1 uppercase, 1 lowercase & 6+ chars
+                </p>
+              )}
             </div>
             <div>
               <Link to="/forgot-password" className="link link-hover">
