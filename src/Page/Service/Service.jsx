@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../../Provider/AuthProvider";
+import { useEffect, useState } from "react";
+import { Link} from "react-router";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -9,25 +8,8 @@ const Services = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [minBudget, setMinBudget] = useState("");
   const [maxBudget, setMaxBudget] = useState("");
-  const [selectedService, setSelectedService] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
 
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
-  const openModal = (service) => {
-    if (!user) {
-      navigate("/login"); 
-      return;
-    }
-    setSelectedService(service);
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    setSelectedService(null);
-  };
 
   useEffect(() => {
     fetch("/services.json")
@@ -126,62 +108,14 @@ const Services = () => {
               <p className="text-sm mt-1 text-gray-500">Type: {service.type}</p>
             </div>
 
-            <div className="flex gap-3 mt-4">
+            <div className=" text-center mt-4">
               <Link to={`/service/${service.id}`} className="btn btn-outline w-1/2">
                 Details
               </Link>
-              <button
-                onClick={() => openModal(service)}
-                className="btn btn-primary w-1/2"
-              >
-                Book Now
-              </button>
             </div>
           </div>
         ))}
       </div>
-
-      {/* Booking Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-96">
-            <h2 className="text-2xl font-bold mb-2 text-center">
-              Book: {selectedService?.title}
-            </h2>
-
-            <p className="text-gray-600 text-center mb-4">
-              Price: BDT {selectedService?.price}
-            </p>
-
-            <div className="space-y-3">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="input input-bordered w-full"
-              />
-              <input
-                type="text"
-                placeholder="Phone Number"
-                className="input input-bordered w-full"
-              />
-              <input type="date" className="input input-bordered w-full" />
-              <textarea
-                placeholder="Additional Notes"
-                className="textarea textarea-bordered w-full"
-              ></textarea>
-
-              <button className="btn btn-primary w-full">Confirm Booking</button>
-            </div>
-
-            <button
-              onClick={closeModal}
-              className="btn btn-outline w-full mt-4"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
