@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Smart Home Installation",
+    "description": "Complete smart home automation setup",
+    "price": 12000,
+    "image": "/images/smart-home.jpg",
+    "details": "We provide full smart home installation including smart lighting, CCTV setup, door lock automation, and mobile app integration."
+  },
+  {
+    "id": 2,
+    "title": "Home Decoration (Small Event)",
+    "description": "Birthday, anniversary & small event decoration",
+    "price": 8000,
+    "image": "/images/home-decoration.jpg",
+    "details": "Small event decoration including theme setup, flowers, basic lighting, balloons, and backdrop design."
+  },
+  {
+    "id": 3,
+    "title": "Ceremony Decoration (Premium)",
+    "description": "Wedding & large event decoration",
+    "price": 25000,
+    "image": "/images/ceremony.jpg",
+    "details": "Premium wedding and ceremony decoration including stage setup, floral design, lighting, and full event management."
+  }
+]

@@ -14,6 +14,7 @@ import Service from './Page/Service/Service.jsx';
 import PrivateRoute from './PrivateRoute/PrivateRoute.jsx';
 import Decorator from './Page/Decorator/Decorator.jsx';
 import Coverage from './Page/Coverage/Coverage.jsx';
+import ServiceDetails from './Page/Service/ServiceDetails.jsx';
 
 
 
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
         path:'/service',
         Component:Service
       },
+      {
+        path: "/service/:id", 
+        Component:ServiceDetails
+      }
+      ,
       {
         path:'/decorator',
         element:<PrivateRoute><Decorator></Decorator></PrivateRoute>
