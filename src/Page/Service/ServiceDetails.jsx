@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router";
 import { AuthContext } from "../../Provider/AuthProvider";
 import axios from "axios";
+import Loading from "../../Loading/Loading";
 
 const ServiceDetails = () => {
   const { id } = useParams();
@@ -70,7 +71,7 @@ const ServiceDetails = () => {
     try {
       // Backend API call
       const res = await axios.post(
-        "https://your-backend-api.com/bookings",
+        "http://localhost:5000/bookings",
         bookingData
       );
       alert("Booking successful!");
@@ -81,7 +82,7 @@ const ServiceDetails = () => {
     }
   };
 
-  if (!service) return <p className="text-center py-10">Loading...</p>;
+  if (!service) return <Loading></Loading>;
 
   return (
     <div className="max-w-4xl mx-auto py-10">

@@ -15,6 +15,7 @@ import PrivateRoute from './PrivateRoute/PrivateRoute.jsx';
 import Decorator from './Page/Decorator/Decorator.jsx';
 import Coverage from './Page/Coverage/Coverage.jsx';
 import ServiceDetails from './Page/Service/ServiceDetails.jsx';
+import DashboardLayout from './Page/DashBoard/DashBoard.jsx';
 
 
 
@@ -60,7 +61,20 @@ const router = createBrowserRouter([
 
 
 
-]}]);
+]},
+
+{
+    path: "/dashboard",
+    Component:DashboardLayout,
+    errorElement:<ErrorPage/>,
+    children:[
+      {
+        path:'/profile',
+        Component
+      }
+    ]
+  }
+]);
 
 
 

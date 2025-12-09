@@ -192,10 +192,10 @@ const Navbar = () => {
                 <div className="my-2">
                   <hr />
                 </div>
-                <button className="w-full flex justify-center items-center gap-2 bg-[#00b894] hover:bg-[#636e72] text-white py-2 rounded-lg mt-2">
+                <NavLink to='/dashboard' className="w-full flex justify-center items-center gap-2 bg-[#00b894] hover:bg-[#636e72] text-white py-2 rounded-lg mt-2">
                   <MdDashboardCustomize />
                   Dashboard
-                </button>
+                </NavLink>
 
                 <div className="flex items-center justify-between mt-3 mb-2">
                   <span className="text-sm font-medium">Dark Mode</span>
@@ -206,14 +206,14 @@ const Navbar = () => {
                     className="toggle toggle-primary"
                   />
                 </div>
-                <Link
+                {/* <Link
                   to="/my-profile"
                   onClick={() => setDropdownOpen(false)}
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg flex items-center justify-center space-x-2"
                 >
                   <CgProfile className="w-6 h-6" />
                   <span>My Profile</span>
-                </Link>
+                </Link> */}
 
                 <div className="w-full mt-2">
                   <hr></hr>
