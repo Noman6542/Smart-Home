@@ -16,6 +16,7 @@ import Decorator from './Page/Decorator/Decorator.jsx';
 import Coverage from './Page/Coverage/Coverage.jsx';
 import ServiceDetails from './Page/Service/ServiceDetails.jsx';
 import DashboardLayout from './Page/DashBoard/DashBoard.jsx';
+import Profile from './Page/DashBoard/UsersAllThings/Profile/Profile.jsx';
 
 
 
@@ -69,8 +70,8 @@ const router = createBrowserRouter([
     errorElement:<ErrorPage/>,
     children:[
       {
-        path:'/profile',
-        Component
+        path:'/dashboard/profile',
+        Component:Profile
       }
     ]
   }
