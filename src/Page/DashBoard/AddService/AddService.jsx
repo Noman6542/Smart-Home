@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { use, useState } from "react";
+import { imageUpload } from "../../Utils";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function AddServicePage() {
+  const { user } = use(AuthContext);
   const {
     register,
     handleSubmit,
@@ -12,11 +17,46 @@ export default function AddServicePage() {
   const [preview, setPreview] = useState(null);
 
   const onSubmit = async (data) => {
-    console.log("Service Added:", data);
-    alert("Service Added Successfully!");
+  try {
+    const { description, details, price, title, type } = data;
+    const imageFile = data?.image[0];
+
+    toast.loading("Uploading image...", { id: "upload" });
+
+    const imageUrl = await imageUpload(imageFile);
+
+    toast.loading("Saving service...", { id: "upload" });
+
+    const serviceData = {
+      image: imageUrl,
+      description,
+      details,
+      price: Number(price),
+      title,
+      type,
+      seller: {
+        image: user?.photoURL,
+        name: user?.displayName,
+        email: user?.email,
+      },
+      createdAt: new Date(),
+    };
+
+    const res = await axios.post(
+      `http://localhost:5000/services`,
+      serviceData
+    );
+
+    toast.success("Service added successfully!", { id: "upload" });
+
     reset();
     setPreview(null);
-  };
+
+  } catch (error) {
+    console.log(error);
+    toast.error("Failed to add service!", { id: "upload" });
+  }
+};
 
   return (
     <div className="max-w-2xl mx-auto p-6 shadow-xl rounded-2xl bg-white mt-10">
@@ -32,7 +72,9 @@ export default function AddServicePage() {
             className="w-full input input-bordered"
             placeholder="e.g. Smart Home Installation"
           />
-          {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
+          {errors.title && (
+            <p className="text-red-500 text-sm">{errors.title.message}</p>
+          )}
         </div>
 
         {/* Type */}
@@ -46,7 +88,9 @@ export default function AddServicePage() {
             <option value="Smart Home">Smart Home</option>
             <option value="Decoration">Decoration</option>
           </select>
-          {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
+          {errors.type && (
+            <p className="text-red-500 text-sm">{errors.type.message}</p>
+          )}
         </div>
 
         {/* Description */}
@@ -54,7 +98,9 @@ export default function AddServicePage() {
           <label className="block font-semibold mb-1">Short Description</label>
           <input
             type="text"
-            {...register("description", { required: "Description is required" })}
+            {...register("description", {
+              required: "Description is required",
+            })}
             className="w-full input input-bordered"
             placeholder="e.g. Complete smart home automation setup"
           />
@@ -72,7 +118,9 @@ export default function AddServicePage() {
             className="w-full input input-bordered"
             placeholder="12000"
           />
-          {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
+          {errors.price && (
+            <p className="text-red-500 text-sm">{errors.price.message}</p>
+          )}
         </div>
 
         {/* Details */}
@@ -83,7 +131,9 @@ export default function AddServicePage() {
             className="w-full textarea textarea-bordered"
             placeholder="Full description here..."
           ></textarea>
-          {errors.details && <p className="text-red-500 text-sm">{errors.details.message}</p>}
+          {errors.details && (
+            <p className="text-red-500 text-sm">{errors.details.message}</p>
+          )}
         </div>
 
         {/* Image Upload */}
@@ -96,7 +146,9 @@ export default function AddServicePage() {
             className="file-input file-input-bordered w-full"
             onChange={(e) => setPreview(URL.createObjectURL(e.target.files[0]))}
           />
-          {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
+          {errors.image && (
+            <p className="text-red-500 text-sm">{errors.image.message}</p>
+          )}
         </div>
 
         {preview && (
@@ -110,4 +162,3 @@ export default function AddServicePage() {
     </div>
   );
 }
-

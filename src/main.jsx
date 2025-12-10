@@ -17,6 +17,8 @@ import Coverage from './Page/Coverage/Coverage.jsx';
 import ServiceDetails from './Page/Service/ServiceDetails.jsx';
 import DashboardLayout from './Page/DashBoard/DashBoard.jsx';
 import Profile from './Page/DashBoard/UsersAllThings/Profile/Profile.jsx';
+import AddServicePage from './Page/DashBoard/AddService/AddService.jsx';
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -72,7 +74,11 @@ const router = createBrowserRouter([
       {
         path:'/dashboard/profile',
         Component:Profile
-      }
+      },
+      {
+        path:'/dashboard/service',
+        Component:AddServicePage
+      },
     ]
   }
 ]);
@@ -85,6 +91,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
+       <Toaster position="top-center" reverseOrder={false} />
     </AuthProvider>
   </StrictMode>,
 )
