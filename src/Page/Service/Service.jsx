@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link} from "react-router";
+import axios from "axios";
+import { Link } from "react-router";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -8,37 +9,45 @@ const Services = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [minBudget, setMinBudget] = useState("");
   const [maxBudget, setMaxBudget] = useState("");
+  const [loading, setLoading] = useState(true);
 
-
-
+  // Fetch from backend
   useEffect(() => {
-    fetch("/services.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setServices(data);
-        setFilteredServices(data);
-      });
+    const fetchServices = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/services`
+        );
+        setServices(res.data.data || []);
+      setFilteredServices(res.data.data || []);
+      } catch (error) {
+        console.log("Error fetching services:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
   }, []);
 
+  // Filter logic
   useEffect(() => {
     let temp = services;
 
-    // Search Filter
     if (searchText) {
       temp = temp.filter((s) =>
         s.title.toLowerCase().includes(searchText.toLowerCase())
       );
     }
 
-    // Type Filter
     if (selectedType !== "All") {
       temp = temp.filter((s) => s.type === selectedType);
     }
 
-    // Budget Filter
     if (minBudget) {
       temp = temp.filter((s) => s.price >= parseInt(minBudget));
     }
+
     if (maxBudget) {
       temp = temp.filter((s) => s.price <= parseInt(maxBudget));
     }
@@ -47,6 +56,13 @@ const Services = () => {
   }, [searchText, selectedType, minBudget, maxBudget, services]);
 
   const serviceTypes = ["All", "Home", "Wedding", "Office", "Seminar", "Meeting"];
+
+  if (loading)
+    return (
+      <div className="text-center py-20 text-xl font-semibold">
+        Loading services...
+      </div>
+    );
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
@@ -93,7 +109,7 @@ const Services = () => {
       <div className="grid md:grid-cols-3 gap-6">
         {filteredServices.map((service) => (
           <div
-            key={service.id}
+            key={service._id}
             className="p-5 border rounded-xl shadow hover:shadow-lg flex flex-col justify-between h-full"
           >
             <div>
@@ -108,8 +124,8 @@ const Services = () => {
               <p className="text-sm mt-1 text-gray-500">Type: {service.type}</p>
             </div>
 
-            <div className=" text-center mt-4">
-              <Link to={`/service/${service.id}`} className="btn btn-outline w-1/2">
+            <div className="text-center mt-4">
+              <Link to={`/service/${service._id}`} className="btn btn-outline w-1/2">
                 Details
               </Link>
             </div>
