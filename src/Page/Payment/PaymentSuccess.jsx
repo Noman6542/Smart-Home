@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const PaymentSuccess = () => {
         </h1>
 
         <p className="text-gray-600 mb-6">
-          Thank you for your purchase. Your payment has been processed successfully.
+          Thank you for your booking. Your payment has been processed successfully.
         </p>
 
         <button

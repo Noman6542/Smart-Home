@@ -120,7 +120,7 @@ const Services = () => {
               />
               <h3 className="text-2xl font-semibold mt-3">{service.title}</h3>
               <p className="text-gray-600">{service.description}</p>
-              <p className="text-primary font-bold mt-2">BDT {service.price}</p>
+              <p className="text-primary font-bold mt-2">USD ${service.price}</p>
               <p className="text-sm mt-1 text-gray-500">Type: {service.type}</p>
             </div>
 

@@ -106,7 +106,7 @@ const ServiceDetails = () => {
             {service.details}
           </p>
           <p className="text-3xl font-bold text-primary mt-6">
-            Price: BDT {service.price}
+            Price: USD ${service.price}
           </p>
           <button onClick={openModal} className="btn btn-primary mt-6 w-40">
             Book Now

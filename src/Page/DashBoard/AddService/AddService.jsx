@@ -111,7 +111,7 @@ export default function AddServicePage() {
 
         {/* Price */}
         <div>
-          <label className="block font-semibold mb-1">Price (BDT)</label>
+          <label className="block font-semibold mb-1">Price (USD $)</label>
           <input
             type="number"
             {...register("price", { required: "Price is required" })}
