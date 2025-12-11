@@ -21,6 +21,7 @@ import AddServicePage from "./Page/DashBoard/AddService/AddService.jsx";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyBookings from "./Page/DashBoard/Booking/Booking.jsx";
+import PaymentSuccess from "./Page/Payment/PaymentSuccess.jsx";
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,11 @@ const router = createBrowserRouter([
       {
         path: "/coverage",
         Component: Coverage,
-        // loader: () => fetch("/serviceCenter.json").then((res) => res.json()),
+        loader: () => fetch("/serviceCenter.json").then((res) => res.json()),
+      },
+      {
+        path: "/payment-success",
+        Component: PaymentSuccess,
       },
     ],
   },
@@ -81,6 +86,7 @@ const router = createBrowserRouter([
         path: "/dashboard/bookings",
         Component: MyBookings,
       },
+      
     ],
   },
 ]);
