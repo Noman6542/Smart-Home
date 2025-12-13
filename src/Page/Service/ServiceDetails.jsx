@@ -35,7 +35,7 @@ const ServiceDetails = () => {
 
   const closeModal = () => setIsOpen(false);
 
-  // BOOKING CREATE 
+  // BOOKING CREATE
   const handleBooking = async () => {
     setLoading(true);
 
@@ -46,6 +46,11 @@ const ServiceDetails = () => {
       serviceType: service.type,
       userName: user.displayName,
       email: user.email,
+      seller: {
+        name: service.seller?.name,
+        email: service.seller?.email,
+        image: service.seller?.image,
+      },
       status: "pending",
       createdAt: new Date(),
     };
@@ -87,10 +92,7 @@ const ServiceDetails = () => {
             Price: USD ${service.price}
           </p>
 
-          <button
-            onClick={openModal}
-            className="btn btn-primary mt-6 w-40"
-          >
+          <button onClick={openModal} className="btn btn-primary mt-6 w-40">
             Book Now
           </button>
 
@@ -107,9 +109,7 @@ const ServiceDetails = () => {
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-xl w-96 space-y-3">
-            <h2 className="text-2xl font-bold text-center">
-              Confirm Booking
-            </h2>
+            <h2 className="text-2xl font-bold text-center">Confirm Booking</h2>
 
             <p>
               <strong>Service:</strong> {service.title}
@@ -117,9 +117,7 @@ const ServiceDetails = () => {
             <p className="max-h-40 overflow-y-auto">
               <strong>Details:</strong> {service.details}
             </p>
-            <p className="text-xl font-bold">
-              Price: ${service.price}
-            </p>
+            <p className="text-xl font-bold">Price: ${service.price}</p>
 
             <button
               onClick={handleBooking}
@@ -129,10 +127,7 @@ const ServiceDetails = () => {
               {loading ? "Booking..." : "Confirm Booking"}
             </button>
 
-            <button
-              onClick={closeModal}
-              className="btn btn-outline w-full"
-            >
+            <button onClick={closeModal} className="btn btn-outline w-full">
               Cancel
             </button>
           </div>

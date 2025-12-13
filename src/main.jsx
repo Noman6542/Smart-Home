@@ -22,6 +22,7 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyBookings from "./Page/DashBoard/Booking/Booking.jsx";
 import PaymentSuccess from "./Page/Payment/PaymentSuccess.jsx";
+import MyInventory from "./Page/DashBoard/MyInventory/MyInventory.jsx";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/bookings",
         Component: MyBookings,
+      },
+      {
+        path: "/dashboard/inventory",
+        Component: MyInventory,
+      },
+      {
+        // path: "dashboard/manage-decorator",
+        // Component: Manage Decorato,
       },
       
     ],
