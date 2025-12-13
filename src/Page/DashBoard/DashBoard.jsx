@@ -3,9 +3,10 @@ import {
   MdAddBusiness,
   MdDashboardCustomize,
   MdDesignServices,
+  MdInventory2,
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
-import { FaListAlt } from "react-icons/fa";
+import { FaListAlt, FaPalette } from "react-icons/fa";
 import { IoMdCash } from "react-icons/io";
 import { IoArrowBack } from "react-icons/io5";
 import Footer from "../Shared/Footer/Footer";
@@ -46,6 +47,24 @@ const DashboardLayout = () => {
             }
           >
             <FaListAlt /> My Bookings
+          </NavLink>
+          <NavLink
+            to="/dashboard/inventory"
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-3 rounded-lg transition-all duration-300
+    ${isActive ? "bg-blue-600 text-white shadow-md" : "hover:bg-gray-200"}`
+            }
+          >
+            <MdInventory2 /> My Inventory
+          </NavLink>
+          <NavLink
+            to="/dashboard/manage-decorator"
+            className={({ isActive }) =>
+              `flex items-center gap-2 p-3 rounded-lg transition-all duration-300
+    ${isActive ? "bg-blue-600 text-white shadow-md" : "hover:bg-gray-200"}`
+            }
+          >
+            <FaPalette /> Manage Decorator
           </NavLink>
 
           <NavLink

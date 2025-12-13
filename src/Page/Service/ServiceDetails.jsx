@@ -1,29 +1,29 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate, data } from "react-router";
-import { AuthContext } from "../../Provider/AuthProvider";
+import { useParams, useNavigate } from "react-router";
 import axios from "axios";
+import { AuthContext } from "../../Provider/AuthProvider";
 import Loading from "../../Loading/Loading";
+import toast from "react-hot-toast";
 
 const ServiceDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const [service, setService] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
-
+  // Load service
   useEffect(() => {
     axios
       .get("http://localhost:5000/services")
       .then((res) => {
-        const data = res.data.data;
-        const findService = data.find((s) => s._id === id);
+        const findService = res.data.data.find((s) => s._id === id);
         setService(findService);
       })
-      .catch((err) => console.log(err));
-  }, [id, user]);
-
-  
+      .catch((err) => console.error(err));
+  }, [id]);
 
   const openModal = () => {
     if (!user) {
@@ -35,83 +35,69 @@ const ServiceDetails = () => {
 
   const closeModal = () => setIsOpen(false);
 
-  // payment
-  const { _id, title, details, price, type } = service || {};
+  // BOOKING CREATE 
+  const handleBooking = async () => {
+    setLoading(true);
 
-  const handlePayment = async () => {
-    const paymentInfo = {
-      serviceId: _id,
-      serviceName: title,
-      serviceType: type,
-      description: details,
-      price: price,
-      userName: user?.displayName,
-      userEmail: user?.email,
+    const bookingData = {
+      serviceId: service._id,
+      serviceTitle: service.title,
+      servicePrice: service.price,
+      serviceType: service.type,
+      userName: user.displayName,
+      email: user.email,
+      status: "pending",
+      createdAt: new Date(),
     };
 
-    const { data } = await axios.post(
-      `http://localhost:5000/create-checkout-session`,
-      paymentInfo
-    )
-    window.location.href = data.url
+    try {
+      await axios.post("http://localhost:5000/bookings", bookingData);
+      toast.success("Booking created successfully! Please complete payment.");
+      closeModal();
+      navigate("/dashboard/bookings");
+    } catch (error) {
+      console.error(error);
+      toast.error("Booking failed!");
+    } finally {
+      setLoading(false);
+    }
   };
-
-  // Booking
-
-  // const handleBooking = async (e) => {
-  //   e.preventDefault();
-  //   if (!formData.date || !formData.location) {
-  //     alert("Please fill all required fields");
-  //     return;
-  //   }
-
-  //   const bookingData = {
-  //     ...formData,
-  //     serviceId: service._id,
-  //     serviceTitle: service.title,
-  //     servicePrice: service.price,
-  //     status: "pending",
-  //     createdAt: new Date(),
-  //   };
-
-  //   try {
-  //     await axios.post("http://localhost:5000/bookings", bookingData);
-  //     alert("Booking successful!");
-  //     closeModal();
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Booking failed. Try again.");
-  //   }
-  // };
 
   if (!service) return <Loading />;
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
-      {/* Service Layout */}
+      {/* SERVICE DETAILS */}
       <div className="flex flex-col md:flex-row gap-8">
-        {/* LEFT SIDE - IMAGE */}
+        {/* IMAGE */}
         <div className="md:w-1/2">
           <img
             src={service.image}
-            className="w-full h-96 object-cover rounded-xl shadow"
             alt={service.title}
+            className="w-full h-96 object-cover rounded-xl shadow"
           />
         </div>
 
-        {/* RIGHT SIDE - DETAILS */}
+        {/* INFO */}
         <div className="md:w-1/2 flex flex-col justify-center">
           <h2 className="text-4xl font-bold">{service.title}</h2>
-          <p className="text-gray-600 mt-4 leading-relaxed">
-            {service.details}
-          </p>
+          <p className="text-gray-600 mt-4 ">{service.details}</p>
+
           <p className="text-3xl font-bold text-primary mt-6">
             Price: USD ${service.price}
           </p>
-          <button onClick={openModal} className="btn btn-primary mt-6 w-40">
+
+          <button
+            onClick={openModal}
+            className="btn btn-primary mt-6 w-40"
+          >
             Book Now
           </button>
-          <button onClick={() => navigate('/service')}  className="btn hover:btn-accent mt-6 w-40">
+
+          <button
+            onClick={() => navigate("/service")}
+            className="btn btn-outline mt-4 w-40"
+          >
             Back
           </button>
         </div>
@@ -120,37 +106,36 @@ const ServiceDetails = () => {
       {/* BOOKING MODAL */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <form className="bg-white p-6 rounded-xl shadow-xl w-96 space-y-3">
-            <h2 className="text-2xl font-bold mb-2 text-center">
-              Book: {service.title}
+          <div className="bg-white p-6 rounded-xl shadow-xl w-96 space-y-3">
+            <h2 className="text-2xl font-bold text-center">
+              Confirm Booking
             </h2>
-            <p className="text-gray-600 text-center mb-2">
-              Price: BDT {service.price}
-            </p>
 
-            {/* Service Info without image */}
             <p>
-              <strong>Title:</strong> {service.title}
+              <strong>Service:</strong> {service.title}
             </p>
-            <p>
+            <p className="max-h-40 overflow-y-auto">
               <strong>Details:</strong> {service.details}
             </p>
-            <p>
-              <strong>Price:</strong> BDT {service.price}
+            <p className="text-xl font-bold">
+              Price: ${service.price}
             </p>
 
-            {/* Button text changed to Pay */}
-            <button onClick={handlePayment} type="button" className="btn btn-primary w-full">
-              Pay
-            </button>
             <button
-              type="button"
-              onClick={closeModal}
-              className="btn btn-outline w-full mt-2"
+              onClick={handleBooking}
+              disabled={loading}
+              className="btn btn-primary w-full"
             >
-              Close
+              {loading ? "Booking..." : "Confirm Booking"}
             </button>
-          </form>
+
+            <button
+              onClick={closeModal}
+              className="btn btn-outline w-full"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
     </div>

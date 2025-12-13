@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import axios from 'axios';
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
+   const [searchParams] = useSearchParams()
+  const sessionId = searchParams.get('session_id')
+  useEffect(() => {
+    if (sessionId) {
+      axios.post(`http://localhost:5000/payment-success`, {
+        sessionId,
+      })
+    }
+  }, [sessionId])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200 px-4">
+    <div className=" max-w-[1150px] h-full mx-auto flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200 p-4 ">
       <motion.div
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
