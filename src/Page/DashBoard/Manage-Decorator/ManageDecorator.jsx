@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import { AuthContext } from "../../../Provider/AuthProvider";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../../Provider/AuthProvider";
+
 
 const ManageDecorator = () => {
   const { user } = useContext(AuthContext);
@@ -30,20 +31,14 @@ const ManageDecorator = () => {
     fetchBookings();
   }, [user]);
 
-  // Status toggle
-  const handleStatusToggle = async (id, currentStatus) => {
-    const newStatus = currentStatus === "pending" ? "completed" : "pending";
-
+  const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.patch(
-        `http://localhost:5000/bookings/${id}/status`,
-        { status: newStatus }
-      );
+      await axios.patch(`http://localhost:5000/bookings/${id}/status`, {
+        status: newStatus,
+      });
 
       setBookings((prev) =>
-        prev.map((b) =>
-          b._id === id ? { ...b, status: newStatus } : b
-        )
+        prev.map((b) => (b._id === id ? { ...b, status: newStatus } : b))
       );
 
       toast.success(`Status updated to ${newStatus}`);
@@ -53,7 +48,6 @@ const ManageDecorator = () => {
     }
   };
 
-  // Cancel booking
   const handleCancel = async (id) => {
     if (!window.confirm("Cancel this booking?")) return;
 
@@ -77,7 +71,7 @@ const ManageDecorator = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold mb-6">My Assigned Projects</h2>
+      <h2 className="text-3xl font-bold mb-6">Manage Bookings</h2>
 
       {bookings.length === 0 ? (
         <p className="text-center text-gray-500">
@@ -109,22 +103,16 @@ const ManageDecorator = () => {
                     className="hover:bg-gray-50"
                   >
                     <td>{index + 1}</td>
-
-                    <td className="font-medium">
-                      {booking.serviceName}
-                    </td>
-
+                    <td className="font-medium">{booking.serviceTitle}</td>
                     <td>
-                      <p className="font-semibold">{booking.name}</p>
-                      <p className="text-sm text-gray-500">
-                        {booking.email}
-                      </p>
+                      <p className="font-semibold">{booking.userName}</p>
+                      <p className="text-sm text-gray-500">{booking.email}</p>
                     </td>
-
                     <td className="font-semibold text-green-600">
-                      ${booking.price}
+                      ${booking.servicePrice}
                     </td>
 
+                    {/* Status */}
                     <td>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium
@@ -138,18 +126,18 @@ const ManageDecorator = () => {
                       </span>
                     </td>
 
-                    <td className="flex gap-2 justify-center">
-                      <button
-                        onClick={() =>
-                          handleStatusToggle(
-                            booking._id,
-                            booking.status
-                          )
+                    {/* Action Dropdown */}
+                    <td className="flex gap-2 justify-center items-center">
+                      <select
+                        value={booking.status}
+                        onChange={(e) =>
+                          handleStatusChange(booking._id, e.target.value)
                         }
-                        className="btn btn-xs btn-outline"
+                        className="select select-bordered select-sm w-24"
                       >
-                        Toggle
-                      </button>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                      </select>
 
                       <button
                         onClick={() => handleCancel(booking._id)}

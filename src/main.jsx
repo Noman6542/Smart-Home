@@ -23,6 +23,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyBookings from "./Page/DashBoard/Booking/Booking.jsx";
 import PaymentSuccess from "./Page/Payment/PaymentSuccess.jsx";
 import MyInventory from "./Page/DashBoard/MyInventory/MyInventory.jsx";
+import ManageDecorator from "./Page/DashBoard/Manage-Decorator/ManageDecorator.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,8 +93,8 @@ const router = createBrowserRouter([
         Component: MyInventory,
       },
       {
-        // path: "dashboard/manage-decorator",
-        // Component: Manage Decorato,
+        path: "dashboard/manage-decorator",
+        Component: ManageDecorator,
       },
       
     ],

@@ -58,7 +58,7 @@ const DashboardLayout = () => {
             <MdInventory2 /> My Inventory
           </NavLink>
           <NavLink
-            to="/dashboard/manage-decorator"
+            to="dashboard/manage-decorator"
             className={({ isActive }) =>
               `flex items-center gap-2 p-3 rounded-lg transition-all duration-300
     ${isActive ? "bg-blue-600 text-white shadow-md" : "hover:bg-gray-200"}`
