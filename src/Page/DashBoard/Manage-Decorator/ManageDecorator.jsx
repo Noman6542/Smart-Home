@@ -17,7 +17,7 @@ const ManageDecorator = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:5000/manage-decorator/${user.email}`
+          `${import.meta.env.VITE_Server_localhost}/manage-decorator/${user.email}`
         );
         setBookings(res.data?.data || []);
       } catch (err) {
@@ -33,7 +33,7 @@ const ManageDecorator = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/bookings/${id}/status`, {
+      await axios.patch(`${import.meta.env.VITE_Server_localhost}/bookings/${id}/status`, {
         status: newStatus,
       });
 
@@ -52,7 +52,7 @@ const ManageDecorator = () => {
     if (!window.confirm("Cancel this booking?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/bookings/${id}`);
+      await axios.delete(`${import.meta.env.VITE_Server_localhost}/bookings/${id}`);
       setBookings((prev) => prev.filter((b) => b._id !== id));
       toast.success("Booking cancelled");
     } catch (err) {

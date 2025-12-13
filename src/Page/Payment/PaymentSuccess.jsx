@@ -10,7 +10,7 @@ const PaymentSuccess = () => {
   const sessionId = searchParams.get('session_id')
   useEffect(() => {
     if (sessionId) {
-      axios.post(`http://localhost:5000/payment-success`, {
+      axios.post(`${import.meta.env.VITE_Server_localhost}/payment-success`, {
         sessionId,
       })
     }

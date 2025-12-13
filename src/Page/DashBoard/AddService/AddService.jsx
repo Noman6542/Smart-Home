@@ -43,7 +43,7 @@ export default function AddServicePage() {
     };
 
     const res = await axios.post(
-      `http://localhost:5000/services`,
+      `${import.meta.env.VITE_Server_localhost}/services`,
       serviceData
     );
 

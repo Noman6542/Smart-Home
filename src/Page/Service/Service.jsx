@@ -16,7 +16,7 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/services`
+          `${import.meta.env.VITE_Server_localhost}/services`
         );
         setServices(res.data.data || []);
       setFilteredServices(res.data.data || []);

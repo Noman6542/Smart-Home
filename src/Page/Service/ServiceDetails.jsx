@@ -17,7 +17,7 @@ const ServiceDetails = () => {
   // Load service
   useEffect(() => {
     axios
-      .get("http://localhost:5000/services")
+      .get(`${import.meta.env.VITE_Server_localhost}/services`)
       .then((res) => {
         const findService = res.data.data.find((s) => s._id === id);
         setService(findService);
@@ -56,7 +56,7 @@ const ServiceDetails = () => {
     };
 
     try {
-      await axios.post("http://localhost:5000/bookings", bookingData);
+      await axios.post(`${import.meta.env.VITE_Server_localhost}/bookings`, bookingData);
       toast.success("Booking created successfully! Please complete payment.");
       closeModal();
       navigate("/dashboard/bookings");

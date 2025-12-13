@@ -23,7 +23,7 @@ const MyInventory = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:5000/my-Inventory/${user.email}`
+          `${import.meta.env.VITE_Server_localhost}/my-Inventory/${user.email}`
         );
         setServices(res.data?.data || []);
       } catch (error) {
@@ -48,7 +48,7 @@ const MyInventory = () => {
               className="btn btn-sm btn-error"
               onClick={async () => {
                 try {
-                  await axios.delete(`http://localhost:5000/services/${id}`);
+                  await axios.delete(`${import.meta.env.VITE_Server_localhost}/services/${id}`);
                   setServices((prev) =>
                     prev.filter((service) => service._id !== id)
                   );

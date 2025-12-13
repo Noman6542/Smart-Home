@@ -22,7 +22,7 @@ const MyBookings = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:5000/bookings/user/${user.email}`
+          `${import.meta.env.VITE_Server_localhost}/bookings/user/${user.email}`
         );
         setBookings(res.data?.data || []);
       } catch (err) {
@@ -51,7 +51,7 @@ const MyBookings = () => {
       };
 
       const res = await axios.post(
-        "http://localhost:5000/create-checkout-session",
+        `${import.meta.env.VITE_Server_localhost}/create-checkout-session`,
         paymentInfo
       );
 
@@ -74,7 +74,7 @@ const MyBookings = () => {
             className="btn btn-sm btn-error"
             onClick={async () => {
               try {
-                const res = await axios.delete(`http://localhost:5000/bookings/${bookingId}`);
+                const res = await axios.delete(`${import.meta.env.VITE_Server_localhost}/bookings/${bookingId}`);
                 if (res.data.success) {
                   setBookings((prev) => prev.filter((b) => b._id !== bookingId));
                   toast.success("Booking cancelled successfully!");
