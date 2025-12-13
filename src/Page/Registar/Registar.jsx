@@ -7,6 +7,7 @@ import { IoEyeOff } from "react-icons/io5";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { saveOrUpdateUser } from "../Utils";
 
 const Register = () => {
   const { createUser, setUser, googleWithSignin, updateUserProfile } =
@@ -34,22 +35,26 @@ const Register = () => {
           import.meta.env.VITE_users_photo_secret_key
         }`;
         axios.post(Image_Api_URL, fromData).then((res) => {
-          console.log("after image update", res.data.data.url);
+          const imageURL = res.data.data.url;
+          console.log("after image update", imageURL);
 
           // update profile
 
           const userProfile = {
             displayName: data.name,
-            photoURL: res.data.data.url,
+            photoURL: imageURL,
           };
-
+          saveOrUpdateUser({
+            name: data.name,
+            email: data.email,
+            image: imageURL,
+          });
           updateUserProfile(userProfile)
             .then(() => {
-             
               navigate(location.state || "/");
             })
             .catch((error) => {
-              toast.error( error.message);
+              toast.error(error.message);
             });
         });
 
