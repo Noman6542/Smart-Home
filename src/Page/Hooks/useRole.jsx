@@ -10,6 +10,10 @@ const useRole = () => {
   const [roleLoading, setRoleLoading] = useState(true);
 
   useEffect(() => {
+    //  wait until auth loading finished
+    if (loading) return;
+
+    //  auth done but no user
     if (!user?.email) {
       setRoleLoading(false);
       return;
@@ -17,10 +21,8 @@ const useRole = () => {
 
     const fetchRole = async () => {
       try {
-        const res = await axiosSecure.get(
-          `/user/role/${user.email}`
-        );
-        setRole(res.data?.role);
+        const res = await axiosSecure.get(`/user/role/${user.email}`);
+        setRole(res.data?.role || "user");
       } catch (error) {
         console.error("Failed to fetch role", error);
         setRole(null);
@@ -30,7 +32,7 @@ const useRole = () => {
     };
 
     fetchRole();
-  }, [user?.email, axiosSecure]);
+  }, [user?.email, loading, axiosSecure]);
 
   return { role, roleLoading };
 };
