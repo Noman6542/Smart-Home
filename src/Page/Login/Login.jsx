@@ -6,6 +6,7 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOffSharp } from "react-icons/io5";
 import { useForm } from "react-hook-form";
+import { saveOrUpdateUser } from "../Utils";
 
 const Login = () => {
   const {
@@ -20,26 +21,46 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogin = (data) => {
-    login(data.email, data.password)
-      .then((result) => {
-        const user = result.user;
-        toast.success(`Login Successfully, ${user.displayName}`);
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch((error) => setError(error.message));
-  };
+  const handleLogin = async (data) => {
+  try {
+    const result = await login(data.email, data.password);
+    const user = result.user;
 
-  const handleWithGoogle = () => {
-    googleWithSignin()
-      .then((result) => {
-        const user = result.user;
-        toast.success(`Login Successfully, ${user.displayName}`);
+    await saveOrUpdateUser({
+      name: user.displayName,
+      email: user.email,
+      image: user.photoURL,
+    });
 
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch((error) => setError(error.message));
-  };
+    toast.success(`Login Successfully, ${user.displayName}`);
+    navigate(location.state || "/");
+  } catch (error) {
+    setError(error.message);
+  }
+};
+
+
+
+  // handleWith Google 
+  const handleWithGoogle = async () => {
+  try {
+    const result = await googleWithSignin();
+    const user = result.user;
+
+    toast.success(`Login Successfully, ${user.displayName}`);
+
+    await saveOrUpdateUser({
+      name: user.displayName,
+      email: user.email,
+      image: user.photoURL,
+    });
+
+    navigate(location.state || "/");
+  } catch (error) {
+    setError(error.message);
+  }
+};
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 max-w-6xl mx-auto rounded-4xl">
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8">
