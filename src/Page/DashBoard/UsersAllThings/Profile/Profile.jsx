@@ -1,10 +1,20 @@
 import { use } from "react";
-import { motion } from "framer-motion";
 import { AuthContext } from "../../../../Provider/AuthProvider";
+import { motion } from "framer-motion";
+import {
+  FaEnvelope,
+  FaIdBadge,
+  FaUserShield,
+  FaEdit,
+  FaKey,
+} from "react-icons/fa";
+import useRole from "../../../HooksRole/useRole";
 
 
-export default function UserProfile() {
+
+const Profile = () => {
   const { user } = use(AuthContext);
+  const { role, roleLoading } = useRole();
 
   if (!user) {
     return (
@@ -16,78 +26,67 @@ export default function UserProfile() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      className="max-w-lg mx-auto mt-14 p-8 rounded-3xl 
-                 bg-white/80 backdrop-blur-xl shadow-2xl"
+      transition={{ duration: 0.5 }}
+      className="max-w-xl mx-auto mt-14 p-6 rounded-2xl bg-white shadow-xl"
     >
-      {/* Profile Image */}
-      <div className="flex flex-col items-center text-center relative">
-        <motion.img
+      {/* ===== Header ===== */}
+      <div className="flex flex-col items-center text-center">
+        <img
           src={user.photoURL || "https://i.ibb.co/CKwP1V5/user.png"}
-          alt="User"
-          className="w-36 h-36 rounded-full border-[5px] border-primary shadow-lg"
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          alt="user"
+          className="w-32 h-32 rounded-full border-4 border-primary"
         />
 
-        {/* Animated Welcome Text */}
-        <motion.h2
-          className="mt-6 text-2xl font-bold bg-gradient-to-r 
-                     from-primary via-indigo-500 to-purple-500 
-                     bg-clip-text text-transparent "
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          Welcome back, {user.displayName?.split(" ")[0] || "User"}
-        </motion.h2>
+        <h2 className="mt-4 text-2xl font-bold">
+          {user.displayName || "User"}
+        </h2>
 
-        {/* Subtitle */}
-        <motion.p
-          className="text-gray-500 mt-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          Glad to see you again
-        </motion.p>
+        <p className="text-gray-500 text-sm">Welcome to your profile</p>
       </div>
 
-      {/* Info Section */}
-      <motion.div
-        className="mt-8 p-6 rounded-2xl bg-gray-100"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        <h4 className="text-lg font-semibold mb-4 text-gray-800">
-          Profile Overview
-        </h4>
-
-        <div className="space-y-3 text-gray-700">
-          <p>
-            <span className="font-semibold">Full Name:</span>{" "}
-            {user.displayName || "Not provided"}
-          </p>
-          <p>
-            <span className="font-semibold">Email Address:</span>{" "}
-            {user.email}
-          </p>
-          
+      {/* ===== User Info (directly) ===== */}
+      <div className="mt-6 space-y-3">
+        <div className="flex items-center gap-3 bg-gray-100 p-3 rounded-lg">
+          <FaEnvelope className="text-primary text-lg" />
+          <div>
+            <p className="text-xs text-gray-500">Email</p>
+            <p className="font-medium break-all">{user.email}</p>
+          </div>
         </div>
-      </motion.div>
 
-      {/* Footer Quote */}
-      <motion.p
-        className="mt-6 text-center text-sm italic text-gray-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.9 }}
-      >
-        “A profile is not just data — it’s your digital identity.”
-      </motion.p>
+        <div className="flex items-center gap-3 bg-gray-100 p-3 rounded-lg">
+          <FaIdBadge className="text-primary text-lg" />
+          <div>
+            <p className="text-xs text-gray-500">User ID</p>
+            <p className="font-medium break-all">{user.uid}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 bg-gray-100 p-3 rounded-lg">
+          <FaUserShield className="text-primary text-lg" />
+          <div>
+            <p className="text-xs text-gray-500">Role</p>
+            <p className="font-medium break-all">
+              {roleLoading ? "Loading..." : role || "user"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== Action Buttons ===== */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <button className="btn btn-outline btn-primary flex gap-2 items-center">
+          <FaEdit /> Update Profile
+        </button>
+
+        <button className="btn btn-outline btn-warning flex gap-2 items-center">
+          <FaKey /> Change Password
+        </button>
+      </div>
     </motion.div>
   );
-}
+};
+
+export default Profile;
