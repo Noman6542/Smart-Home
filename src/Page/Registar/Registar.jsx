@@ -66,17 +66,25 @@ const Register = () => {
         toast.error("Firebase Error:", error.message);
       });
   };
-  const handleWithGoogle = () => {
-    googleWithSignin()
-      .then((result) => {
-        const user = result.user;
-        toast.success(`Login Successfully, ${user.displayName}`);
-        // console.log(user);
+  const handleWithGoogle = async () => {
+  try {
+    const result = await googleWithSignin();
+    const user = result.user;
 
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch((error) => setError(error.message));
-  };
+    toast.success(`Login Successfully, ${user.displayName}`);
+
+    await saveOrUpdateUser({
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.photoURL,
+    });
+
+    navigate(location.state || "/");
+  } catch (error) {
+    setError(error.message);
+  }
+};
+
 
   return (
     <div className="hero bg-base-200 min-h-screen my-10">
