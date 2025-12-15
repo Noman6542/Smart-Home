@@ -24,7 +24,7 @@ import MyBookings from "./Page/DashBoard/Booking/Booking.jsx";
 import PaymentSuccess from "./Page/Payment/PaymentSuccess.jsx";
 import MyInventory from "./Page/DashBoard/MyInventory/MyInventory.jsx";
 import ManageDecorator from "./Page/DashBoard/ManageDecorator.jsx/ManageDecorator.jsx";
-
+import Statistic from "./Page/DashBoard/Statistic/Statistic.jsx";
 
 const router = createBrowserRouter([
   {
@@ -74,30 +74,58 @@ const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    Component: DashboardLayout,
+    Component: DashboardLayout, 
     errorElement: <ErrorPage />,
     children: [
+     
       {
-        path: "/dashboard/profile",
-        Component: Profile,
+        index: true,
+        element: (
+          <PrivateRoute>
+            <Statistic />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/dashboard/service",
-        Component: AddServicePage,
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/dashboard/bookings",
-        Component: MyBookings,
+        path: "service",
+        element: (
+          <PrivateRoute>
+            <AddServicePage />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/dashboard/inventory",
-        Component: MyInventory,
+        path: "bookings",
+        element: (
+          <PrivateRoute>
+            <MyBookings />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "dashboard/manage-decorator",
-        Component: ManageDecorator,
+        path: "inventory",
+        element: (
+          <PrivateRoute>
+            <MyInventory />
+          </PrivateRoute>
+        ),
       },
-      
+      {
+        path: "manage-decorator",
+        element: (
+          <PrivateRoute>
+            <ManageDecorator />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);
@@ -108,9 +136,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-      <RouterProvider router={router} />
-      <Toaster position="top-center" reverseOrder={false} />
-    </AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster position="top-center" reverseOrder={false} />
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>
 );
