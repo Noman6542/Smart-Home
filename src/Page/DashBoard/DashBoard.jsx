@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
 import { MdAddBusiness, MdInventory2 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -8,90 +9,186 @@ import useRole from "../HooksRole/useRole";
 import { FcStatistics } from "react-icons/fc";
 import Loading from "../../Loading/Loading";
 
-
 const DashboardLayout = () => {
-  const navItem = ({ isActive }) =>
-  `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
-   ${isActive 
-     ? "bg-blue-600 text-white shadow-md" 
-     : "text-gray-700 hover:bg-gray-200"
-   }`;
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { role, roleLoading } = useRole();
 
-  if (roleLoading) {
-    return <Loading></Loading>;
-  }
+  if (roleLoading) return <Loading />;
+
+  const navItem = ({ isActive }) =>
+    `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
+    ${isActive ? "bg-blue-600 text-white shadow-md" : "text-gray-700 hover:bg-gray-200"}`;
 
   return (
-    <div className="flex min-h-screen bg-gray-100 max-w-6xl mx-auto">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-xl p-6 space-y-6">
-        <h2 className="text-2xl font-bold text-center">Dashboard</h2>
+    <div className="flex max-w-6xl mx-auto min-h-screen bg-gray-100">
+      {/* Sidebar for large screens */}
+      <div className="hidden md:flex w-64 bg-white shadow-xl p-6 flex-col justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-center">Dashboard</h2>
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 p-2 hover:bg-gray-200 rounded-lg w-full mt-4"
+          >
+            <IoArrowBack /> Back
+          </button>
 
-        <button
-          onClick={() => navigate("/")}
-          className=" flex items-center gap-2 p-2 hover:bg-gray-200 rounded-lg w-full"
-        >
-          <IoArrowBack /> Back
-        </button>
-        
+          <nav className="space-y-3 mt-6">
+            <NavLink to="/dashboard" className={navItem} end>
+              <FcStatistics /> Statistic
+            </NavLink>
 
-        <nav className="space-y-3 mt-4">
+            <NavLink to="/dashboard/profile" className={navItem}>
+              <CgProfile /> My Profile
+            </NavLink>
 
-          <NavLink to="/dashboard/Statistic" className={navItem}>
-            <FcStatistics /> Statistic
-          </NavLink>
+            {role === "customer" && (
+              <>
+                <NavLink to="/dashboard/bookings" className={navItem}>
+                  <FaListAlt /> My Bookings
+                </NavLink>
+                <NavLink to="/dashboard/payments" className={navItem}>
+                  <IoMdCash /> Payment History
+                </NavLink>
+              </>
+            )}
 
-          {/* ===== Common ===== */}
-          <NavLink to="/dashboard/profile" className={navItem}>
-            <CgProfile /> My Profile
-          </NavLink>
+            {role === "decorator" && (
+              <>
+                <NavLink to="/dashboard/service" className={navItem}>
+                  <MdAddBusiness /> Add Service
+                </NavLink>
+                <NavLink to="/dashboard/inventory" className={navItem}>
+                  <MdInventory2 /> My Services
+                </NavLink>
+              </>
+            )}
 
-          {/* ===== Customer ===== */}
-          {role === "customer" && (
-            <>
-              <NavLink to="/dashboard/bookings" className={navItem}>
-                <FaListAlt /> My Bookings
-              </NavLink>
-
-              <NavLink to="/dashboard/payments" className={navItem}>
-                <IoMdCash /> Payment History
-              </NavLink>
-            </>
-          )}
-
-          {/* ===== Decorator ===== */}
-          {role === "decorator" && (
-            <>
-              <NavLink to="/dashboard/service" className={navItem}>
-                <MdAddBusiness /> Add Service
-              </NavLink>
-
-              <NavLink to="/dashboard/inventory" className={navItem}>
-                <MdInventory2 /> My Services
-              </NavLink>
-            </>
-          )}
-
-          {/* ===== Admin ===== */}
-          {role === "admin" && (
-            <>
+            {role === "admin" && (
               <NavLink to="/dashboard/manage-decorator" className={navItem}>
                 <FaPalette /> Manage Decorator
               </NavLink>
-            </>
-          )}
-        </nav>
+            )}
+          </nav>
+        </div>
 
         <p className="text-center text-sm text-gray-500 pt-4 border-t">
           Smart Home & Decoration System
         </p>
       </div>
 
+      {/* Sidebar for small screens */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 m-2 bg-blue-600 text-white rounded-md"
+        >
+          {sidebarOpen ? "Close Menu" : "Open Menu"}
+        </button>
+
+        {/* Animated Sidebar */}
+        <div
+          className={`fixed inset-0 z-40 transition-all duration-300 ${
+            sidebarOpen ? "bg-black bg-opacity-50" : "bg-transparent pointer-events-none"
+          }`}
+          onClick={() => setSidebarOpen(false)}
+        >
+          <div
+            className={`absolute left-0 top-0 w-64 h-full bg-white shadow-xl p-6 flex flex-col justify-between z-50
+              transform transition-transform duration-300 ${
+                sidebarOpen ? "translate-x-0" : "-translate-x-full"
+              }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              <h2 className="text-2xl font-bold text-center">Dashboard</h2>
+              <button
+                onClick={() => {
+                  navigate("/");
+                  setSidebarOpen(false);
+                }}
+                className="flex items-center gap-2 p-2 hover:bg-gray-200 rounded-lg w-full mt-4"
+              >
+                <IoArrowBack /> Back
+              </button>
+
+              <nav className="space-y-3 mt-6">
+                <NavLink
+                  to="/dashboard"
+                  className={navItem}
+                  end
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <FcStatistics /> Statistic
+                </NavLink>
+
+                <NavLink
+                  to="/dashboard/profile"
+                  className={navItem}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <CgProfile /> My Profile
+                </NavLink>
+
+                {role === "customer" && (
+                  <>
+                    <NavLink
+                      to="/dashboard/bookings"
+                      className={navItem}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <FaListAlt /> My Bookings
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/payments"
+                      className={navItem}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <IoMdCash /> Payment History
+                    </NavLink>
+                  </>
+                )}
+
+                {role === "decorator" && (
+                  <>
+                    <NavLink
+                      to="/dashboard/service"
+                      className={navItem}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <MdAddBusiness /> Add Service
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/inventory"
+                      className={navItem}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <MdInventory2 /> My Services
+                    </NavLink>
+                  </>
+                )}
+
+                {role === "admin" && (
+                  <NavLink
+                    to="/dashboard/manage-decorator"
+                    className={navItem}
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    <FaPalette /> Manage Decorator
+                  </NavLink>
+                )}
+              </nav>
+            </div>
+
+            <p className="text-center text-sm text-gray-500 pt-4 border-t">
+              Smart Home & Decoration System
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Body */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 md:p-6">
         <Outlet />
       </div>
     </div>
