@@ -3,6 +3,7 @@ import { Outlet, NavLink, useNavigate } from "react-router";
 import { MdAddBusiness, MdHomeWork, MdInventory2 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FaListAlt, FaPalette } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 import { IoMdCash } from "react-icons/io";
 import { IoArrowBack } from "react-icons/io5";
 import useRole from "../HooksRole/useRole";
@@ -18,7 +19,11 @@ const DashboardLayout = () => {
 
   const navItem = ({ isActive }) =>
     `flex items-center gap-3 p-3 rounded-lg transition-all duration-300
-    ${isActive ? "bg-blue-600 text-white shadow-md" : "text-gray-700 hover:bg-gray-200"}`;
+    ${
+      isActive
+        ? "bg-blue-600 text-white shadow-md"
+        : "text-gray-700 hover:bg-gray-200"
+    }`;
 
   return (
     <div className="flex max-w-6xl mx-auto min-h-screen bg-gray-100">
@@ -68,9 +73,14 @@ const DashboardLayout = () => {
             )}
 
             {role === "admin" && (
-              <NavLink to="/dashboard/manage-decorator" className={navItem}>
-                <FaPalette /> Manage Decorator
-              </NavLink>
+              <>
+                <NavLink to="/dashboard/manage-decorator" className={navItem}>
+                  <FaPalette /> Manage Users
+                </NavLink>
+                <NavLink to="/dashboard/decorator Request" className={navItem}>
+                  <RiAdminFill /> Decorator Request
+                </NavLink>
+              </>
             )}
           </nav>
         </div>
@@ -92,7 +102,9 @@ const DashboardLayout = () => {
         {/* Animated Sidebar */}
         <div
           className={`fixed inset-0 z-40 transition-all duration-300 ${
-            sidebarOpen ? "bg-black bg-opacity-50" : "bg-transparent pointer-events-none"
+            sidebarOpen
+              ? "bg-black bg-opacity-50"
+              : "bg-transparent pointer-events-none"
           }`}
           onClick={() => setSidebarOpen(false)}
         >

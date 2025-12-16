@@ -12,7 +12,6 @@ import ErrorPage from "./ErrorPage/ErrorPage.jsx";
 import Register from "./Page/Registar/Registar.jsx";
 import Service from "./Page/Service/Service.jsx";
 import PrivateRoute from "./PrivateRoute/PrivateRoute.jsx";
-import Decorator from "./Page/Decorator/Decorator.jsx";
 import Coverage from "./Page/Coverage/Coverage.jsx";
 import ServiceDetails from "./Page/Service/ServiceDetails.jsx";
 import DashboardLayout from "./Page/DashBoard/DashBoard.jsx";
@@ -23,9 +22,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyBookings from "./Page/DashBoard/Booking/Booking.jsx";
 import PaymentSuccess from "./Page/Payment/PaymentSuccess.jsx";
 import MyInventory from "./Page/DashBoard/MyInventory/MyInventory.jsx";
-import ManageDecorator from "./Page/DashBoard/ManageDecorator.jsx/ManageDecorator.jsx";
 import Statistic from "./Page/DashBoard/Statistic/Statistic.jsx";
 import BecomeDecorator from "./Page/DashBoard/BecomeDecorator/BecomeDecorator.jsx";
+import DecoratorRequest from "./Page/DashBoard/DecoratorRequest/DecoratorRequest.jsx";
+import ManageUsers from "./Page/DashBoard/ManageUsers/ManageUsers.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,14 +52,6 @@ const router = createBrowserRouter([
       {
         path: "/service/:id",
         Component: ServiceDetails,
-      },
-      {
-        path: "/decorator",
-        element: (
-          <PrivateRoute>
-            <Decorator></Decorator>
-          </PrivateRoute>
-        ),
       },
       {
         path: "/coverage",
@@ -122,7 +114,7 @@ const router = createBrowserRouter([
         path: "manage-decorator",
         element: (
           <PrivateRoute>
-            <ManageDecorator />
+            <ManageUsers />
           </PrivateRoute>
         ),
       },
@@ -130,6 +122,12 @@ const router = createBrowserRouter([
         path: "become-decorator",
         element: <PrivateRoute>
           <BecomeDecorator></BecomeDecorator>
+        </PrivateRoute>,
+      },
+      {
+        path: "decorator Request",
+        element: <PrivateRoute>
+          <DecoratorRequest></DecoratorRequest>
         </PrivateRoute>,
       },
     ],

@@ -1,8 +1,37 @@
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import useAxiosSecure from "../../HooksRole/useAxiosSecure";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
+import { MdOutlinePending } from "react-icons/md";
 
 const BecomeDecorator = () => {
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  const [isRequested, setIsRequested] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axiosSecure
+      .get("/decorator-request-status")
+      .then((res) => {
+        setIsRequested(res.data.requested);
+      })
+      .catch(() => {
+        toast.error("Failed to load request status");
+      })
+      .finally(() => setLoading(false));
+  }, [axiosSecure]);
+
+  const handleRequest = async () => {
+    if (isRequested) return;
+    try {
+      await axiosSecure.post("/become-decorator");
+      toast.success("Request sent,Please wait for admin approval!");
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -12,30 +41,35 @@ const BecomeDecorator = () => {
         transition={{ duration: 0.4 }}
         className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-sm text-center"
       >
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">
-          Become a Decorator
-        </h2>
+        <h2 className="text-2xl font-bold mb-2">Become a Decorator</h2>
+        <p className="text-indigo-600 mb-4">
+        Take your creativity to the next level and join our decorator community today!
+      </p>
 
-        <p className="text-gray-600 mb-6">
-          You are about to apply as a decorator. Continue or close this window.
-        </p>
+
+        {isRequested && (
+          <p className="mb-4 flex items-center justify-center gap-2 text-yellow-600 font-medium">
+            <MdOutlinePending className="text-xl" />
+            Request Pending
+          </p>
+        )}
 
         <div className="flex justify-center gap-4">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              // future: API call / request
-              navigate("/dashboard");
-            }}
-            className="btn btn-primary btn-sm"
+            disabled={isRequested || loading}
+            onClick={handleRequest}
+            whileHover={!isRequested ? { scale: 1.05 } : {}}
+            className={`btn btn-sm ${
+              isRequested
+                ? "btn-disabled bg-gray-300 cursor-not-allowed"
+                : "btn-primary"
+            }`}
           >
-            Continue
+            {isRequested ? "Requested" : "Continue"}
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             onClick={() => navigate(-1)}
             className="btn btn-outline btn-sm"
           >
