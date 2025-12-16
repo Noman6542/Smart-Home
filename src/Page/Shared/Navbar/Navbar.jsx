@@ -146,13 +146,6 @@ const Navbar = () => {
             <span>Contact</span>
           </NavLink>
           
-          <NavLink
-            to="/decorator"
-            className="bg-emerald-500 hover:bg-emerald-700 flex justify-center items-center p-3 gap-2 rounded-full text-white"
-          >
-            <MdOutlineHomeRepairService className="w-5 h-5  " />
-            <span className=" font-semibold">Decorator</span>
-          </NavLink>
         </ul>
       </div>
 
@@ -206,14 +199,7 @@ const Navbar = () => {
                     className="toggle toggle-primary"
                   />
                 </div>
-                {/* <Link
-                  to="/my-profile"
-                  onClick={() => setDropdownOpen(false)}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg flex items-center justify-center space-x-2"
-                >
-                  <CgProfile className="w-6 h-6" />
-                  <span>My Profile</span>
-                </Link> */}
+                
 
                 <div className="w-full mt-2">
                   <hr></hr>

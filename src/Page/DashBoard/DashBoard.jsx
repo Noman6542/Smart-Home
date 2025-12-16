@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
-import { MdAddBusiness, MdInventory2 } from "react-icons/md";
+import { MdAddBusiness, MdHomeWork, MdInventory2 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FaListAlt, FaPalette } from "react-icons/fa";
 import { IoMdCash } from "react-icons/io";
@@ -46,6 +46,9 @@ const DashboardLayout = () => {
               <>
                 <NavLink to="/dashboard/bookings" className={navItem}>
                   <FaListAlt /> My Bookings
+                </NavLink>
+                <NavLink to="become-decorator" className={navItem}>
+                  <MdHomeWork /> Become a Decorator
                 </NavLink>
                 <NavLink to="/dashboard/payments" className={navItem}>
                   <IoMdCash /> Payment History

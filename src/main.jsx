@@ -25,6 +25,7 @@ import PaymentSuccess from "./Page/Payment/PaymentSuccess.jsx";
 import MyInventory from "./Page/DashBoard/MyInventory/MyInventory.jsx";
 import ManageDecorator from "./Page/DashBoard/ManageDecorator.jsx/ManageDecorator.jsx";
 import Statistic from "./Page/DashBoard/Statistic/Statistic.jsx";
+import BecomeDecorator from "./Page/DashBoard/BecomeDecorator/BecomeDecorator.jsx";
 
 const router = createBrowserRouter([
   {
@@ -74,10 +75,9 @@ const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    Component: DashboardLayout, 
+    Component: DashboardLayout,
     errorElement: <ErrorPage />,
     children: [
-     
       {
         index: true,
         element: (
@@ -125,6 +125,12 @@ const router = createBrowserRouter([
             <ManageDecorator />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "become-decorator",
+        element: <PrivateRoute>
+          <BecomeDecorator></BecomeDecorator>
+        </PrivateRoute>,
       },
     ],
   },
