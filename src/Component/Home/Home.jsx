@@ -2,6 +2,9 @@ import React, { use } from 'react';
 import Header from '../../Page/Header/Header';
 import { AuthContext } from '../../Provider/AuthProvider';
 import Loading from '../../Loading/Loading';
+import MostPoPularDecorator from '../../Page/MostPopularDecorator/MostPoPularDecorator';
+import HowItWorks from '../../Page/HowItWork/HowItWork';
+import OurMission from '../../Page/OurMission/OurMission';
 
 const Home = () => {
   const {loading}= use(AuthContext)
@@ -11,6 +14,9 @@ const Home = () => {
   return (
     <div className='max-w-6xl mx-auto'>
       <Header></Header>
+      <MostPoPularDecorator></MostPoPularDecorator>
+      <HowItWorks></HowItWorks>
+      <OurMission></OurMission>
     </div>
   );
 };

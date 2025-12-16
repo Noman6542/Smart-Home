@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router";
 
 const Header = () => {
   return (
@@ -22,9 +23,9 @@ const Header = () => {
           with elegant designs & on-site premium service.
         </p>
 
-        <button className="btn btn-primary px-8 py-3 text-lg rounded-lg shadow-md">
+        <Link to={'/service'} className="btn btn-primary hover:bg-amber-50 hover:text-black px-8 py-3 text-lg rounded-lg shadow-md">
           Book Decoration Service
-        </button>
+        </Link>
       </motion.div>
 
       {/* Right Side Image */}
