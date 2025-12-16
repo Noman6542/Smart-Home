@@ -5,6 +5,7 @@ import Loading from '../../Loading/Loading';
 import MostPoPularDecorator from '../../Page/MostPopularDecorator/MostPoPularDecorator';
 import HowItWorks from '../../Page/HowItWork/HowItWork';
 import OurMission from '../../Page/OurMission/OurMission';
+import WhyChooseUs from '../../Page/WhyChooseUs/WhyChooseUs';
 
 const Home = () => {
   const {loading}= use(AuthContext)
@@ -17,6 +18,7 @@ const Home = () => {
       <MostPoPularDecorator></MostPoPularDecorator>
       <HowItWorks></HowItWorks>
       <OurMission></OurMission>
+      <WhyChooseUs></WhyChooseUs>
     </div>
   );
 };
