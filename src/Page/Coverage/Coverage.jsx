@@ -72,7 +72,7 @@ const Coverage = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="relative max-w-lg mx-auto my-6"
+        className="relative max-w-lg mx-auto my-10"
       >
         <form onSubmit={handleSubmit}>
           <label className="input bg-white/40 backdrop-blur-md border shadow-md rounded-xl flex items-center gap-3 px-4">

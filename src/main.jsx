@@ -26,6 +26,8 @@ import Statistic from "./Page/DashBoard/Statistic/Statistic.jsx";
 import BecomeDecorator from "./Page/DashBoard/BecomeDecorator/BecomeDecorator.jsx";
 import DecoratorRequest from "./Page/DashBoard/DecoratorRequest/DecoratorRequest.jsx";
 import ManageUsers from "./Page/DashBoard/ManageUsers/ManageUsers.jsx";
+import About from "./Page/About/About.jsx";
+import Contact from "./Page/ContactUs/ContactUs.jsx";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,18 @@ const router = createBrowserRouter([
         path: "/payment-success",
         Component: PaymentSuccess,
       },
+      {
+        path:'/about',
+        Component:About
+      },
+      {
+        path:'/contact',
+        Component:Contact
+      }
+
+
+
+
     ],
   },
 
@@ -132,6 +146,9 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+
+
 ]);
 
 const queryClient = new QueryClient();
