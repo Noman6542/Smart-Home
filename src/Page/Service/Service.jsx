@@ -110,7 +110,7 @@ const Services = () => {
         {filteredServices.map((service) => (
           <div
             key={service._id}
-            className="p-5 border rounded-xl shadow hover:shadow-lg flex flex-col justify-between h-full"
+            className="p-5 rounded-xl shadow hover:shadow-lg flex flex-col justify-between h-full"
           >
             <div>
               <img

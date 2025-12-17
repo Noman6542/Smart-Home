@@ -14,7 +14,7 @@ const MostPoPularDecorator = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axiosSecure.get("/popular-services?sort=price_desc&limit=4");
+        const res = await axiosSecure.get("/popular-services?sort=price_desc&limit=6");
         const sortedServices = res.data.data.sort((a, b) => b.price - a.price);
         setServices(sortedServices);
       } catch (err) {
