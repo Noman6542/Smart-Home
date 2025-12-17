@@ -55,9 +55,7 @@ const DashboardLayout = () => {
                 <NavLink to="become-decorator" className={navItem}>
                   <MdHomeWork /> Become a Decorator
                 </NavLink>
-                <NavLink to="/dashboard/payments" className={navItem}>
-                  <IoMdCash /> Payment History
-                </NavLink>
+                
               </>
             )}
 
