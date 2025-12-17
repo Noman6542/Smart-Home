@@ -55,7 +55,7 @@ const Services = () => {
     setFilteredServices(temp);
   }, [searchText, selectedType, minBudget, maxBudget, services]);
 
-  const serviceTypes = ["All", "Home", "Wedding", "Office", "Seminar", "Meeting"];
+  const serviceTypes = ["All", "Smart Home", "Decoration"];
 
   if (loading)
     return (
