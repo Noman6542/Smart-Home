@@ -4,17 +4,19 @@ import { Navigate, useLocation } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const PrivateRoute = ({ children }) => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, Loading } = useContext(AuthContext);
   const location = useLocation();
 
-  if (loading) {
+  if (Loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <BarLoader color="#5e5feb" size={20} />
+        {/* <BarLoader color="#5e5feb" size={20} /> */}
+        <p>Loading..........</p>
       </div>
     );
   }
-  if (user && user?.email) {
+  
+  if (user ) {
     return children;
   }
   // return <Navigate state={location.pathname} to="/login"></Navigate>;
