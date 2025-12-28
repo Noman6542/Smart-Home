@@ -87,8 +87,8 @@ const Register = () => {
 
 
   return (
-    <div className="hero bg-base-200 min-h-screen my-10">
-      <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl text-center">
+    <div className="hero bg-base-200 min-h-screen py-10 max-w-6xl mx-auto rounded-4xl">
+      <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl text-center ">
         <h2 className="font-semibold text-3xl p-4">Register your account</h2>
         <form onSubmit={handleSubmit(handleRegister)} className="card-body">
           <fieldset className="fieldset space-y-3">
@@ -179,18 +179,16 @@ const Register = () => {
 
             {error && <p className="text-red-600">{error}</p>}
 
-            <button type="submit" className="btn btn-neutral w-full mt-3">
+            <button type="submit" className="btn btn-outline flex items-center gap-2 mt-3">
               Register
             </button>
           </fieldset>
 
-          <div className="flex justify-center items-center">
-            <p className="font-bold text-2xl">or</p>
-          </div>
+           <div className="divider">or</div>
         </form>
         <button
           onClick={handleWithGoogle}
-          className="btn btn-soft btn-primary flex justify-center items-center mb-5 gap-2"
+          className="btn btn-outline flex items-center gap-2 mb-3 mx-6"
         >
           <FcGoogle></FcGoogle> Login with Google{" "}
         </button>

@@ -119,7 +119,7 @@ const Login = () => {
               </Link>
             </div>
             {error && <p className="text-red-400">{error}</p>}
-            <button type="submit" className="btn btn-neutral mt-4">
+            <button type="submit" className="btn btn-outline w-full flex items-center gap-2">
               Login
             </button>
           </fieldset>
@@ -129,7 +129,7 @@ const Login = () => {
 
         <button
           onClick={handleWithGoogle}
-          className="btn btn-outline w-full flex items-center gap-2"
+          className="btn btn-outline mx-4 flex items-center gap-2"
         >
           <FcGoogle></FcGoogle>
           Continue with Google

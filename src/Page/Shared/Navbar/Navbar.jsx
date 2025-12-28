@@ -110,7 +110,7 @@ const Navbar = () => {
         {/* LOGO */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center space-x-2 text-white font-bold tracking-tight"
+          className="flex cursor-pointer items-center space-x-2 text-white font-bold tracking-tight"
         >
           <img src={logo} alt="" className="w-8 h-8" />
           <span className="text-xl">Smart Home</span>
@@ -162,7 +162,7 @@ const Navbar = () => {
             </Link>
             <Link
               to="/register"
-              className="btn btn-secondary hidden md:flex items-center justify-center hover:bg-white hover:text-black"
+              className="btn bg-white hidden md:flex items-center justify-center hover:bg-[#422ad5] hover:text-black"
             >
               Register
             </Link>
