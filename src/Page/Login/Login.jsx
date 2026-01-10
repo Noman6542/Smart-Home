@@ -14,6 +14,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
 
@@ -21,7 +22,7 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-
+  // ---------- Normal Login ----------
   const handleLogin = async (data) => {
     try {
       const result = await login(data.email, data.password);
@@ -35,19 +36,16 @@ const Login = () => {
 
       toast.success(`Login Successfully, ${user.displayName}`);
       navigate(location.state || "/");
-      
     } catch (error) {
       setError(error.message);
     }
   };
 
-  // handleWith Google
+  // ---------- Google Login ----------
   const handleWithGoogle = async () => {
     try {
       const result = await googleWithSignin();
       const user = result.user;
-
-      toast.success(`Login Successfully, ${user.displayName}`);
 
       await saveOrUpdateUser({
         name: user.displayName,
@@ -55,33 +53,57 @@ const Login = () => {
         image: user.photoURL,
       });
 
+      toast.success(`Login Successfully, ${user.displayName}`);
       navigate(location.state || "/");
     } catch (error) {
       setError(error.message);
     }
   };
 
+  // ---------- Demo User Login ----------
+  const handleDemoUserLogin = async () => {
+    try {
+      await login("demo@user.com", "User123");
+      toast.success("Logged in as Demo User");
+      navigate("/");
+    } catch {
+      toast.error("Demo User login failed");
+    }
+  };
+
+  // ---------- Demo Admin Login ----------
+  const handleDemoAdminLogin = async () => {
+    try {
+      await login("ad@min.com", "11223344Aa");
+      toast.success("Logged in as Demo Admin");
+      navigate("/dashboard");
+    } catch {
+      toast.error("Demo Admin login failed");
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 max-w-6xl mx-auto rounded-4xl">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4 max-w-6xl mx-auto">
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8">
         <h2 className="text-3xl font-bold text-center mb-6">
           Login your account
         </h2>
 
-        <form onSubmit={handleSubmit(handleLogin)} className="card-body">
+        {/* ---------- Login Form ---------- */}
+        <form onSubmit={handleSubmit(handleLogin)} className="card-body p-0">
           <fieldset className="fieldset">
             <label className="label">Email</label>
             <input
               {...register("email", { required: true })}
               type="email"
-              className="input"
+              className="input input-bordered w-full"
               placeholder="Email"
             />
-            {errors.email?.type === "required" && (
+            {errors.email && (
               <p className="text-red-500 text-sm">Email is required</p>
             )}
 
-            <label className="label">Password</label>
+            <label className="label mt-2">Password</label>
             <div className="relative">
               <input
                 {...register("password", {
@@ -90,54 +112,79 @@ const Login = () => {
                   pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
                 })}
                 type={show ? "text" : "password"}
-                className="input"
+                className="input input-bordered w-full"
                 placeholder="Password"
               />
               <span
                 onClick={() => setShow(!show)}
-                className=" absolute right-5 top-1/3 cursor-pointer z-50"
+                className="absolute right-4 top-3 cursor-pointer"
               >
-                {show ? <FaEye></FaEye> : <IoEyeOffSharp />}
+                {show ? <FaEye /> : <IoEyeOffSharp />}
               </span>
-              {errors.password?.type === "required" && (
-                <p className="text-red-500 text-sm">Password is required</p>
-              )}
-              {errors.password?.type === "minLength" && (
-                <p className="text-red-500 text-sm">
-                  Password must be 6+ characters
-                </p>
-              )}
-              {errors.password?.type === "pattern" && (
-                <p className="text-red-500 text-sm">
-                  Password must have 1 uppercase, 1 lowercase & 6+ chars
-                </p>
-              )}
             </div>
-            <div>
-              <Link to="/forgot-password" className="link link-hover">
+
+            {errors.password?.type === "required" && (
+              <p className="text-red-500 text-sm">Password is required</p>
+            )}
+            {errors.password?.type === "minLength" && (
+              <p className="text-red-500 text-sm">
+                Password must be 6+ characters
+              </p>
+            )}
+            {errors.password?.type === "pattern" && (
+              <p className="text-red-500 text-sm">
+                Password must contain uppercase & lowercase
+              </p>
+            )}
+
+            <div className="mt-2">
+              <Link to="/forgot-password" className="link link-hover text-sm">
                 Forgot password?
               </Link>
             </div>
-            {error && <p className="text-red-400">{error}</p>}
-            <button type="submit" className="btn btn-outline w-full flex items-center gap-2">
+
+            {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+
+            <button type="submit" className="btn btn-outline w-full mt-4">
               Login
             </button>
           </fieldset>
         </form>
 
+        {/* ---------- Google Login ---------- */}
         <div className="divider">or</div>
 
         <button
           onClick={handleWithGoogle}
-          className="btn btn-outline mx-4 flex items-center gap-2"
+          className="btn btn-outline w-full flex items-center gap-2"
         >
-          <FcGoogle></FcGoogle>
+          <FcGoogle />
           Continue with Google
         </button>
 
+        {/* ---------- Demo Login Buttons ---------- */}
+        <div className="divider">Demo Access</div>
+
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={handleDemoUserLogin}
+            className="btn btn-outline btn-primary w-full"
+          >
+            Demo User Login
+          </button>
+
+          <button
+            onClick={handleDemoAdminLogin}
+            className="btn btn-outline btn-secondary w-full"
+          >
+            Demo Admin Login
+          </button>
+        </div>
+
+        {/* ---------- Register ---------- */}
         <p className="mt-4 text-center text-sm">
           Don't have an account?{" "}
-          <Link to="/register" className="text-primary">
+          <Link to="/register" className="text-primary font-semibold">
             Register
           </Link>
         </p>

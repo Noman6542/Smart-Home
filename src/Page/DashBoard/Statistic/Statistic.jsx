@@ -1,7 +1,28 @@
 import React from "react";
 import useRole from "../../HooksRole/useRole";
 import Loading from "../../../Loading/Loading";
+import {
+  FaUsers,
+  FaPaintRoller,
+  FaClipboardList,
+  FaDollarSign,
+  FaBriefcase,
+  FaClock,
+} from "react-icons/fa";
 
+const StatCard = ({ icon: Icon, title, value }) => {
+  return (
+    <div className="bg-base-100 rounded-xl shadow-md p-5 flex items-center gap-4 hover:shadow-lg transition">
+      <div className="p-3 rounded-full bg-primary/10 text-primary">
+        <Icon className="text-2xl" />
+      </div>
+      <div>
+        <p className="text-sm text-gray-500">{title}</p>
+        <p className="text-xl font-bold">{value}</p>
+      </div>
+    </div>
+  );
+};
 
 const Statistic = () => {
   const { role, roleLoading } = useRole();
@@ -11,49 +32,92 @@ const Statistic = () => {
   }
 
   return (
-    <div className="p-6 bg-white rounded-2xl shadow-md min-h-[60vh]">
-      <h2 className="text-2xl font-bold mb-6">Dashboard Statistics</h2>
+    <div className="p-6 bg-base-200 rounded-2xl min-h-[60vh]">
+      <h2 className="text-2xl font-bold mb-6">Dashboard Overview</h2>
 
+      {/* ---------------- ADMIN ---------------- */}
       {role === "admin" && (
-        <div className="space-y-4">
-          <p className="text-lg font-semibold">Admin Panel Stats:</p>
-          <ul className="list-disc list-inside text-gray-700">
-            <li>Total Users: 120</li>
-            <li>Total Decorators: 35</li>
-            <li>Active Bookings: 78</li>
-            <li>Revenue: $12,500</li>
-          </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard
+            icon={FaUsers}
+            title="Total Users"
+            value="120"
+          />
+          <StatCard
+            icon={FaPaintRoller}
+            title="Total Decorators"
+            value="35"
+          />
+          <StatCard
+            icon={FaClipboardList}
+            title="Active Bookings"
+            value="78"
+          />
+          <StatCard
+            icon={FaDollarSign}
+            title="Total Revenue"
+            value="$12,500"
+          />
         </div>
       )}
 
+      {/* ---------------- DECORATOR ---------------- */}
       {role === "decorator" && (
-        <div className="space-y-4">
-          <p className="text-lg font-semibold">Decorator Stats:</p>
-          <ul className="list-disc list-inside text-gray-700">
-            <li>My Services: 12</li>
-            <li>Bookings Assigned: 20</li>
-            <li>Pending Requests: 5</li>
-            <li>Earnings: $3,200</li>
-          </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard
+            icon={FaBriefcase}
+            title="My Services"
+            value="12"
+          />
+          <StatCard
+            icon={FaClipboardList}
+            title="Assigned Bookings"
+            value="20"
+          />
+          <StatCard
+            icon={FaClock}
+            title="Pending Requests"
+            value="5"
+          />
+          <StatCard
+            icon={FaDollarSign}
+            title="Total Earnings"
+            value="$3,200"
+          />
         </div>
       )}
 
+      {/* ---------------- CUSTOMER ---------------- */}
       {role === "customer" && (
-        <div className="space-y-4">
-          <p className="text-lg font-semibold">Your Stats:</p>
-          <ul className="list-disc list-inside text-gray-700">
-            <li>My Bookings: 8</li>
-            <li>Completed Bookings: 5</li>
-            <li>Pending Payments: 2</li>
-            <li>Total Spend: $1,450</li>
-          </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard
+            icon={FaClipboardList}
+            title="My Bookings"
+            value="8"
+          />
+          <StatCard
+            icon={FaBriefcase}
+            title="Completed Bookings"
+            value="5"
+          />
+          <StatCard
+            icon={FaClock}
+            title="Pending Payments"
+            value="2"
+          />
+          <StatCard
+            icon={FaDollarSign}
+            title="Total Spend"
+            value="$1,450"
+          />
         </div>
       )}
 
+      {/* ---------------- FALLBACK ---------------- */}
       {!role && (
-        <p className="text-gray-500">
+        <div className="text-center text-gray-500 mt-10">
           Role not found. Please contact support.
-        </p>
+        </div>
       )}
     </div>
   );

@@ -46,7 +46,7 @@ const Navbar = () => {
       : "flex items-center space-x-2 font-bold text-white px-4 py-2 hover:bg-white/10 rounded-lg";
 
   return (
-    <div className="navbar bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 shadow-xl sticky top-0 z-50 backdrop-blur-lg border-b border-white/10 max-w-6xl mx-auto">
+    <div className="navbar bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 shadow-xl sticky top-0 z-50 backdrop-blur-lg border-b border-white/10 max-w-6xl mx-auto ">
       {/* LEFT SIDE */}
       <div className="navbar-start">
         {/* Mobile Menu */}
@@ -147,10 +147,19 @@ const Navbar = () => {
           </NavLink>
           
         </ul>
+        
       </div>
 
       {/* RIGHT SIDE */}
       <div className="navbar-end relative">
+        <div className="flex items-center justify-between m-5">
+                  <input
+                    onChange={(e) => handleTheme(e.target.checked)}
+                    type="checkbox"
+                    defaultChecked={theme === "dark"}
+                    className="toggle toggle-primary text-white"
+                  />
+                </div>
         {/* If NOT Logged In */}
         {!user ? (
           <div className="flex items-center space-x-3">
@@ -190,7 +199,7 @@ const Navbar = () => {
                   Dashboard
                 </NavLink>
 
-                <div className="flex items-center justify-between mt-3 mb-2">
+                {/* <div className="flex items-center justify-between mt-3 mb-2">
                   <span className="text-sm font-medium">Dark Mode</span>
                   <input
                     onChange={(e) => handleTheme(e.target.checked)}
@@ -198,7 +207,7 @@ const Navbar = () => {
                     defaultChecked={theme === "dark"}
                     className="toggle toggle-primary"
                   />
-                </div>
+                </div> */}
                 
 
                 <div className="w-full mt-2">
