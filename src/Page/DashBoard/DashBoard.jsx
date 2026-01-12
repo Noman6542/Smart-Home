@@ -22,18 +22,28 @@ const DashboardLayout = () => {
     ${
       isActive
         ? "bg-blue-600 text-white shadow-md"
-        : "text-gray-700 hover:bg-gray-200"
+        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
     }`;
 
   return (
-    <div className="flex max-w-6xl mx-auto min-h-screen bg-gray-100">
-      {/* Sidebar for large screens */}
-      <div className="hidden md:flex w-64 bg-white shadow-xl p-6 flex-col justify-between">
+    <div className="flex max-w-6xl mx-auto min-h-screen 
+      bg-gray-100 dark:bg-gray-900">
+
+      {/* Sidebar (Desktop) */}
+      <div className="hidden md:flex w-64 bg-white dark:bg-gray-800 
+        shadow-xl p-6 flex-col justify-between">
+
         <div>
-          <h2 className="text-2xl font-bold text-center">Dashboard</h2>
+          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+            Dashboard
+          </h2>
+
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 p-2 hover:bg-gray-200 rounded-lg w-full mt-4"
+            className="flex items-center gap-2 p-2 
+              hover:bg-gray-200 dark:hover:bg-gray-700 
+              rounded-lg w-full mt-4
+              text-gray-700 dark:text-gray-300"
           >
             <IoArrowBack /> Back
           </button>
@@ -55,7 +65,6 @@ const DashboardLayout = () => {
                 <NavLink to="become-decorator" className={navItem}>
                   <MdHomeWork /> Become a Decorator
                 </NavLink>
-                
               </>
             )}
 
@@ -83,12 +92,12 @@ const DashboardLayout = () => {
           </nav>
         </div>
 
-        <p className="text-center text-sm text-gray-500 pt-4 border-t">
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400 pt-4 border-t dark:border-gray-700">
           Smart Home & Decoration System
         </p>
       </div>
 
-      {/* Sidebar for small screens */}
+      {/* Sidebar (Mobile) */}
       <div className="md:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -97,7 +106,6 @@ const DashboardLayout = () => {
           {sidebarOpen ? "Close Menu" : "Open Menu"}
         </button>
 
-        {/* Animated Sidebar */}
         <div
           className={`fixed inset-0 z-40 transition-all duration-300 ${
             sidebarOpen
@@ -107,56 +115,47 @@ const DashboardLayout = () => {
           onClick={() => setSidebarOpen(false)}
         >
           <div
-            className={`absolute left-0 top-0 w-64 h-full bg-white shadow-xl p-6 flex flex-col justify-between z-50
+            className={`absolute left-0 top-0 w-64 h-full 
+              bg-white dark:bg-gray-800 shadow-xl p-6 
+              flex flex-col justify-between z-50
               transform transition-transform duration-300 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
               }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div>
-              <h2 className="text-2xl font-bold text-center">Dashboard</h2>
+              <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+                Dashboard
+              </h2>
+
               <button
                 onClick={() => {
                   navigate("/");
                   setSidebarOpen(false);
                 }}
-                className="flex items-center gap-2 p-2 hover:bg-gray-200 rounded-lg w-full mt-4"
+                className="flex items-center gap-2 p-2 
+                  hover:bg-gray-200 dark:hover:bg-gray-700 
+                  rounded-lg w-full mt-4
+                  text-gray-700 dark:text-gray-300"
               >
                 <IoArrowBack /> Back
               </button>
 
               <nav className="space-y-3 mt-6">
-                <NavLink
-                  to="/dashboard"
-                  className={navItem}
-                  end
-                  onClick={() => setSidebarOpen(false)}
-                >
+                <NavLink to="/dashboard" className={navItem} end onClick={() => setSidebarOpen(false)}>
                   <FcStatistics /> Statistic
                 </NavLink>
 
-                <NavLink
-                  to="/dashboard/profile"
-                  className={navItem}
-                  onClick={() => setSidebarOpen(false)}
-                >
+                <NavLink to="/dashboard/profile" className={navItem} onClick={() => setSidebarOpen(false)}>
                   <CgProfile /> My Profile
                 </NavLink>
 
                 {role === "customer" && (
                   <>
-                    <NavLink
-                      to="/dashboard/bookings"
-                      className={navItem}
-                      onClick={() => setSidebarOpen(false)}
-                    >
+                    <NavLink to="/dashboard/bookings" className={navItem} onClick={() => setSidebarOpen(false)}>
                       <FaListAlt /> My Bookings
                     </NavLink>
-                    <NavLink
-                      to="/dashboard/payments"
-                      className={navItem}
-                      onClick={() => setSidebarOpen(false)}
-                    >
+                    <NavLink to="/dashboard/payments" className={navItem} onClick={() => setSidebarOpen(false)}>
                       <IoMdCash /> Payment History
                     </NavLink>
                   </>
@@ -164,36 +163,24 @@ const DashboardLayout = () => {
 
                 {role === "decorator" && (
                   <>
-                    <NavLink
-                      to="/dashboard/service"
-                      className={navItem}
-                      onClick={() => setSidebarOpen(false)}
-                    >
+                    <NavLink to="/dashboard/service" className={navItem} onClick={() => setSidebarOpen(false)}>
                       <MdAddBusiness /> Add Service
                     </NavLink>
-                    <NavLink
-                      to="/dashboard/inventory"
-                      className={navItem}
-                      onClick={() => setSidebarOpen(false)}
-                    >
+                    <NavLink to="/dashboard/inventory" className={navItem} onClick={() => setSidebarOpen(false)}>
                       <MdInventory2 /> My Services
                     </NavLink>
                   </>
                 )}
 
                 {role === "admin" && (
-                  <NavLink
-                    to="/dashboard/manage-decorator"
-                    className={navItem}
-                    onClick={() => setSidebarOpen(false)}
-                  >
+                  <NavLink to="/dashboard/manage-decorator" className={navItem} onClick={() => setSidebarOpen(false)}>
                     <FaPalette /> Manage Decorator
                   </NavLink>
                 )}
               </nav>
             </div>
 
-            <p className="text-center text-sm text-gray-500 pt-4 border-t">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 pt-4 border-t dark:border-gray-700">
               Smart Home & Decoration System
             </p>
           </div>
@@ -201,7 +188,7 @@ const DashboardLayout = () => {
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-4 md:p-6">
+      <div className="flex-1 p-4 md:p-6 text-gray-800 dark:text-gray-100">
         <Outlet />
       </div>
     </div>
