@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
 import { MdAddBusiness, MdHomeWork, MdInventory2 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -14,6 +14,10 @@ const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { role, roleLoading } = useRole();
+  useEffect(() => {
+    const theme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", theme);
+  }, []);
 
   if (roleLoading) return <Loading />;
 
@@ -25,6 +29,7 @@ const DashboardLayout = () => {
         : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
     }`;
 
+  
   return (
     <div className="flex max-w-6xl mx-auto min-h-screen 
       bg-gray-100 dark:bg-gray-900">

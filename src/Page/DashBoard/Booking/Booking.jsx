@@ -7,11 +7,10 @@ import toast from "react-hot-toast";
 const MyBookings = () => {
   const { user } = useContext(AuthContext);
 
-  // All bookings state
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch user bookings by email
+  // Fetch bookings
   useEffect(() => {
     if (!user?.email) {
       setLoading(false);
@@ -36,7 +35,7 @@ const MyBookings = () => {
     fetchBookings();
   }, [user]);
 
-  // HANDLE PAYMENT (Stripe Redirect)
+  // Payment
   const handlePayment = async (booking) => {
     try {
       const paymentInfo = {
@@ -55,7 +54,6 @@ const MyBookings = () => {
         paymentInfo
       );
 
-      // Redirect to Stripe checkout
       window.location.href = res.data.url;
     } catch (error) {
       console.error(error);
@@ -63,65 +61,82 @@ const MyBookings = () => {
     }
   };
 
-  // HANDLE DELETE / CANCEL BOOKING
+  // Cancel booking
   const handleDelete = (bookingId) => {
-  toast(
-    (t) => (
-      <div className="flex flex-col gap-2">
-        <span>Are you sure you want to cancel this booking?</span>
-        <div className="flex justify-end gap-2 mt-2">
-          <button
-            className="btn btn-sm btn-error"
-            onClick={async () => {
-              try {
-                const res = await axios.delete(`${import.meta.env.VITE_Server_localhost}/bookings/${bookingId}`);
-                if (res.data.success) {
-                  setBookings((prev) => prev.filter((b) => b._id !== bookingId));
-                  toast.success("Booking cancelled successfully!");
-                }
-              } catch (err) {
-                console.error(err);
-                toast.error("Failed to cancel booking!");
-              } finally {
-                toast.dismiss(t.id); 
-              }
-            }}
-          >
-            Yes
-          </button>
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3 text-sm">
+          <span className="text-gray-800 dark:text-gray-200">
+            Are you sure you want to cancel this booking?
+          </span>
 
-          <button
-            className="btn btn-sm btn-outline"
-            onClick={() => toast.dismiss(t.id)}
-          >
-            No
-          </button>
+          <div className="flex justify-end gap-2">
+            <button
+              className="btn btn-sm btn-error"
+              onClick={async () => {
+                try {
+                  const res = await axios.delete(
+                    `${import.meta.env.VITE_Server_localhost}/bookings/${bookingId}`
+                  );
+                  if (res.data.success) {
+                    setBookings((prev) =>
+                      prev.filter((b) => b._id !== bookingId)
+                    );
+                    toast.success("Booking cancelled successfully!");
+                  }
+                } catch (err) {
+                  console.error(err);
+                  toast.error("Failed to cancel booking!");
+                } finally {
+                  toast.dismiss(t.id);
+                }
+              }}
+            >
+              Yes
+            </button>
+
+            <button
+              className="btn btn-sm btn-outline"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              No
+            </button>
+          </div>
         </div>
-      </div>
-    ),
-    { duration: Infinity } 
-  );
-};
+      ),
+      { duration: Infinity }
+    );
+  };
 
   if (!user)
     return (
-      <p className="text-center py-10">Please login to view your bookings.</p>
+      <p className="text-center py-16 text-gray-600 dark:text-gray-400">
+        Please login to view your bookings.
+      </p>
     );
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold mb-6">My Bookings</h2>
+      <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+        My Bookings
+      </h2>
 
       {loading ? (
         <div className="flex justify-center py-20">
           <span className="loading loading-spinner loading-lg"></span>
         </div>
       ) : bookings.length === 0 ? (
-        <p className="text-center text-gray-500">You have no bookings yet.</p>
+        <p className="text-center text-gray-500 dark:text-gray-400">
+          You have no bookings yet.
+        </p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="table w-full border">
-            <thead className="bg-gray-100">
+        <div className="overflow-x-auto rounded-xl border
+          border-gray-200 dark:border-gray-700"
+        >
+          <table className="table w-full
+            bg-white dark:bg-gray-800"
+          >
+            <thead className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
               <tr>
                 <th>Service</th>
                 <th>Price</th>
@@ -130,6 +145,7 @@ const MyBookings = () => {
                 <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
               <AnimatePresence>
                 {bookings.map((booking) => (
@@ -139,25 +155,32 @@ const MyBookings = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
                   >
-                    <td>{booking.serviceTitle}</td>
-                    <td>USD ${booking.servicePrice}</td>
-                    <td>{new Date(booking.createdAt).toLocaleDateString()}</td>
+                    <td className="font-medium">
+                      {booking.serviceTitle}
+                    </td>
 
-                    {/* STATUS BADGE */}
+                    <td>USD ${booking.servicePrice}</td>
+
+                    <td>
+                      {new Date(booking.createdAt).toLocaleDateString()}
+                    </td>
+
+                    {/* Status */}
                     <td>
                       <span
-                        className={`px-3 py-1 rounded-full text-sm ${
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
                           booking.status === "paid"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                            : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
                         }`}
                       >
                         {booking.status}
                       </span>
                     </td>
 
-                    {/* ACTIONS: Pay / Paid / Cancel */}
+                    {/* Actions */}
                     <td className="flex gap-2">
                       {booking.status === "pending" ? (
                         <>
@@ -167,6 +190,7 @@ const MyBookings = () => {
                           >
                             Pay
                           </button>
+
                           <button
                             onClick={() => handleDelete(booking._id)}
                             className="btn btn-sm btn-error"
@@ -175,7 +199,9 @@ const MyBookings = () => {
                           </button>
                         </>
                       ) : (
-                        <span className="text-green-600 font-semibold">Paid</span>
+                        <span className="text-green-600 dark:text-green-400 font-semibold">
+                          Paid
+                        </span>
                       )}
                     </td>
                   </motion.tr>

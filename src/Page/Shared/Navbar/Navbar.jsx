@@ -97,11 +97,12 @@ const Navbar = () => {
 
           {/* Theme Toggle */}
           <input
-            onChange={(e) => handleTheme(e.target.checked)}
-            type="checkbox"
-            defaultChecked={theme === "dark"}
-            className="toggle toggle-primary"
-          />
+  type="checkbox"
+  onChange={(e) => handleTheme(e.target.checked)}
+  defaultChecked={theme === "dark"}
+  className="toggle bg-white border-white checked:bg-white checked:border-white"
+/>
+
 
           {!user ? (
             <>
